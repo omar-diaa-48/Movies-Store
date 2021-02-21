@@ -1,0 +1,13 @@
+# Temporary Folders
+bin/
+obj/
+packages/
+
+# VS
+.vs/
+*.user
+*.DotSettings
+
+# Project specific
+TestApplication/config.json
+*.lock.json
