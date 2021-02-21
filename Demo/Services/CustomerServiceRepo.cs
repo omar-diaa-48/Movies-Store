@@ -8,6 +8,12 @@ namespace Demo.Services
 {
     public class CustomerServiceRepo : ICustomerRepository
     {
+        private readonly MovieStoreDBContext context;
+
+        public CustomerServiceRepo(MovieStoreDBContext _context)
+        {
+            context = _context;
+        }
         public void AddCustomer(Customer customer)
         {
             throw new NotImplementedException();

@@ -11,14 +11,14 @@
     <meta name="author" content="">
     <link rel="profile" href="#">
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600" />
 
     <meta name=viewport content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone-no">
 
     <link rel="stylesheet" href="/css/plugins.css">
     <link rel="stylesheet" href="/css/style.css">
-
+    <link rel="stylesheet" href="~/css/custom.css">
 </head>
 <body>
     <partial name="_Authenticate" />
@@ -49,8 +49,11 @@
     <script src="~/js/plugins.js"></script>
     <script src="~/js/plugins2.js"></script>
     <script src="~/js/custom.js"></script>
+    @RenderSection("Scripts", required: false)
     @*<script src="js/jquery.js"></script>*@
-
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
 </body>
 
 </html>
