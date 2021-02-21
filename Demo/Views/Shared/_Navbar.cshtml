@@ -1,0 +1,69 @@
+﻿<!-- BEGIN | Header -->
+<header class="ht-header">
+    <div class="container">
+        <nav class="navbar navbar-default navbar-custom">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header logo">
+                <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <div id="nav-icon1">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <a href="index-2.html"><img class="logo" src="~/images/logo1.png" alt="" width="119" height="58"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav flex-child-menu menu-left">
+
+                    @*DeveloperTopButton*@
+                    <li class="@*hidden*@">
+                        <a href="#" target="_top"><i style="font-size:xx-large" class="ion-ios-arrow-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="ion-home" asp-action="Index" asp-controller="Home"> Home</a>
+                    </li>
+                    <li class="dropdown first">
+                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                            movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </a>
+                        <ul class="dropdown-menu level1">
+                            <li><a href="movielist.html">Lates Movies</a></li>
+                            <li><a href="moviesingle.html">Most Popular Movies</a></li>
+                            <li class="it-last"><a href="seriessingle.html">Old Movies</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="ion-ios-contact-outline" asp-action="ContactUs" asp-controller="Home"> Contact Us</a>
+                    </li>
+
+                    <li>
+                        <a asp-action="About" asp-controller="Home">About</a>
+                    </li>
+
+                </ul>
+
+
+                <ul class="nav navbar-nav flex-child-menu menu-right">
+                    <li><a href="#">Cart</a></li>
+                    <li class="loginLink"><a href="#">LOG In</a></li>
+                    <li class="btn signupLink"><a href="#">sign up</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <!-- top search form -->
+        <div class="top-search">
+            <select>
+                <option value="united">TV show</option>
+                <option value="saab">Others</option>
+            </select>
+            <input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+        </div>
+    </div>
+</header>
+<!-- END | Header -->

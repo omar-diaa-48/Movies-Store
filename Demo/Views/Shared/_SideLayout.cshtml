@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" class="no-js">
+
+<head>
+
+    <title>Open Pediatrics</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="profile" href="#">
+
+    @*<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />*@
+
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <link rel="stylesheet" href="/css/plugins.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+    <partial name="_Authenticate" />
+
+    <partial name="_Navbar" />
+
+
+    <partial name="_Details" />
+
+    <div class="page-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-detail-ct">
+
+                        @RenderBody();
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <partial name="_Footer" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/plugins.js"></script>
+    <script src="~/js/plugins2.js"></script>
+    <script src="~/js/custom.js"></script>
+    @*<script src="js/jquery.js"></script>*@
+
+</body>
+
+</html>

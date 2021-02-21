@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+
+<head>
+    <!-- Basic need -->
+    <title>Movies Store</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+    <!-- Mobile specific meta -->
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="~/css/plugins.css">
+    <link rel="stylesheet" href="~/css/style.css">
+
+</head>
+<body>
+        <partial name="_Authenticate" />
+
+        <partial name="_Navbar" />
+
+
+        <div>
+            @RenderBody()
+        </div>
+
+        <partial name="_Footer" />
+
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        @*<script src="js/jquery.js"></script>*@
+        <script src="/js/plugins.js"></script>
+        <script src="/js/plugins2.js"></script>
+        <script src="/js/custom.js"></script>
+</body>
+</html>
+
+
+@*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
+
+
+@*<link rel="stylesheet" href="~/css/site.css" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)*@

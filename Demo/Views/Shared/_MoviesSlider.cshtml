@@ -1,0 +1,25 @@
+﻿
+
+
+@model List<Movie>
+
+<div class="slider movie-items">
+    <div class="container">
+        <div class="row">
+            <div class="social-link">
+                <p>Follow us: </p>
+                <a href="https://www.facebook.com"><i class="ion-social-facebook"></i></a>
+                <a href="https://www.twitter.com"><i class="ion-social-twitter"></i></a>
+                <a href="https://www.google.com"><i class="ion-social-googleplus"></i></a>
+                <a href="https://www.youtube.com"><i class="ion-social-youtube"></i></a>
+            </div>
+            <div class="slick-multiItemSlider">
+
+                @foreach (var item in Model)
+                {
+                    <partial name="_MovieItemSlider" model="item" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
