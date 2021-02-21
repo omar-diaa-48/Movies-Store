@@ -1,5 +1,5 @@
 ﻿
-@model List<Movie>
+@model SearchContainer<Movie>
 
 <div class="movie-items">
     <div class="container">
@@ -22,7 +22,7 @@
                         <div id="tab1" class="tab active">
                             <div class="row">
                                 <div class="slick-multiItem">
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.Results)
                                     {
                                         <div class="slide-it">
                                             <partial name="_MovieItem" model="item" />

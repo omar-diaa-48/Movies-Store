@@ -6,32 +6,33 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 namespace Demo.Controllers
 {
     public class HomeController : Controller
     {
-        static List<Movie> Movies = new List<Movie>
+        SearchContainer<Movie>  movies;
+
+        private async Task LoadListOfMovies()
         {
-            new Movie {Name="Ibrahim Elabyad", Genre=Genre.Action},
-            new Movie {Name="Heen Maysara", Genre=Genre.Action},
-            new Movie {Name="Elens we elgen", Genre=Genre.Action},
-            new Movie {Name="Ala gamb yasta", Genre=Genre.Action},
-            new Movie {Name="Debug", Genre=Genre.Action},
-            new Movie {Name="Nemo", Genre=Genre.Action},
-            new Movie {Name="Amazon", Genre=Genre.Family}
-        };
+            movies = await MovieListLoadApi.LoadApi();
+        }
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public  HomeController(ILogger<HomeController> logger)
         {
+
+            ApiHelper.InitialClient();
+
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(Movies);
+            await LoadListOfMovies();
+            return View(movies);
         }
 
         public IActionResult Privacy()

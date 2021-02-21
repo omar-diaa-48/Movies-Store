@@ -1,7 +1,7 @@
 ﻿
 
 
-@model List<Movie>
+@model TMDbLib.Objects.General.SearchContainer<Movie>
 
 <div class="slider movie-items">
     <div class="container">
@@ -15,7 +15,7 @@
             </div>
             <div class="slick-multiItemSlider">
 
-                @foreach (var item in Model)
+                @foreach (var item in Model.Results)
                 {
                     <partial name="_MovieItemSlider" model="item" />
                 }
