@@ -8,11 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.Search;
+
 namespace Demo.Controllers
 {
     public class HomeController : Controller
     {
-        SearchContainer<Movie>  movies;
+        SearchContainer<SearchMovie>  movies;
 
         private async Task LoadListOfMovies()
         {

@@ -1,15 +1,18 @@
 ﻿
-@model Movie
+@model SearchMovie
 
+@{
+    Movie movie = await MovieLoadApi.LoadApi(Model.Id);
+ }
 <div class="movie-item">
     <div class="mv-img">
-        <a href="#"><img src="@Model.PosterPath" alt="" width="285" height="437"></a>
+        <a href="#"><img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}") " alt="" width="285" height="437"></a>
     </div>
     <div class="title-in">
         <div class="cate">
-            <span class="blue"><a href="#">any genre</a></span>
+            <span class="blue"><a href="#">@movie.Genres[0].Name</a></span>
         </div>
         <h6><a href="#">@Model.Title</a></h6>
-        <p><i class="ion-android-star"></i><span>7.4</span> /10</p>
+        <p><i class="ion-android-star"></i><span>@movie.VoteAverage</span> /10</p>
     </div>
 </div>
