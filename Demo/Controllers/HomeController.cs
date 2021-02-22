@@ -21,6 +21,8 @@ namespace Demo.Controllers
             movies = await MovieListLoadApi.LoadApi();
         }
 
+
+
         private readonly ILogger<HomeController> _logger;
 
         public  HomeController(ILogger<HomeController> logger)
