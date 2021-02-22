@@ -11,7 +11,8 @@
     <h4>@Model.Title</h4>
     <hr />
     <div>
-        <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="285" height="437"/>
+        <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="150" height="200"/>
+        @*<video src="@($"https://image.tmdb.org/t/p/original{Model.Videos.Results[0]}")" controls></video>*@
         <article>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras quis sem semper,
             iaculis ipsum fermentum, egestas lectus. Donec vel efficitur leo, a condimentum erat.
@@ -34,7 +35,7 @@
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
+            @Html.DisplayFor(model => model.ReleaseDate.Value.ToShortDateString())
         </dd>
     </dl>
 </div>

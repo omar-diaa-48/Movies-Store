@@ -16,13 +16,6 @@ namespace Demo.Controllers
     {
         SearchContainer<SearchMovie>  movies;
 
-        private async Task LoadListOfMovies()
-        {
-            movies = await MovieListLoadApi.LoadApi();
-        }
-
-
-
         private readonly ILogger<HomeController> _logger;
 
         public  HomeController(ILogger<HomeController> logger)
@@ -32,6 +25,12 @@ namespace Demo.Controllers
 
             _logger = logger;
         }
+
+        private async Task LoadListOfMovies()
+        {
+            movies = await MovieListLoadApi.LoadApi();
+        }
+
 
         public async Task<IActionResult> Index()
         {
