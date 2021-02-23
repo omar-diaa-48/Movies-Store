@@ -14,7 +14,7 @@ namespace Demo.Controllers
 {
     public class HomeController : Controller
     {
-        SearchContainer<SearchMovie>  movies;
+        SearchContainer<SearchMovie> popularMovies, upComingMovies, topRatedMovies, nowPlayingMovies;
 
         private readonly ILogger<HomeController> _logger;
 
@@ -28,14 +28,24 @@ namespace Demo.Controllers
 
         private async Task LoadListOfMovies()
         {
-            movies = await MovieListLoadApi.LoadApi();
+            popularMovies = await MovieListLoadApi.LoadApi("POPULAR");
+            upComingMovies = await MovieListLoadApi.LoadApi("COMING SOON");
+            topRatedMovies = await MovieListLoadApi.LoadApi("TOP RATED");
+            nowPlayingMovies = await MovieListLoadApi.LoadApi("NOW PLAYING");
         }
 
 
         public async Task<IActionResult> Index()
         {
             await LoadListOfMovies();
-            return View(movies);
+            var viewModel = new MoviesListsViewModel
+            {
+                PopularMovies = popularMovies,
+                UpComingMovies = upComingMovies,
+                TopRatedMovies = topRatedMovies,
+                NowPlayingMovies = nowPlayingMovies
+            };
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

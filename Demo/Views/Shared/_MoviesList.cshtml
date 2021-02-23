@@ -1,5 +1,5 @@
 ﻿
-@model SearchContainer<SearchMovie>
+@model MoviesListsViewModel
 
 <div class="movie-items">
     <div class="container">
@@ -9,32 +9,31 @@
                     <h2>in theater</h2>
                     <a href="#" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
                 </div>
-                @*DeveloperMovie*@
                 <div class="tabs">
                     <ul class="tab-links">
                         <li class="active"><a href="#tab1">#Popular</a></li>
                         <li><a href="#tab2"> #Coming soon</a></li>
                         <li><a href="#tab3">  #Top rated  </a></li>
-                        <li><a href="#tab4"> #Most reviewed</a></li>
+                        <li><a href="#tab4"> #Now Playing</a></li>
                     </ul>
 
                     <div class="tab-content">
                         <div id="tab1" class="tab active">
                             <div class="row">
                                 <div class="slick-multiItem">
-                                    @foreach (var item in Model.Results)
+                                    @foreach (var item in Model.PopularMovies.Results)
                                     {
                                         <div class="slide-it">
                                             <partial name="_MovieItem" model="item" />
                                         </div>
-                                    }                                   
+                                      }                                   
                                 </div>
                             </div>
                         </div>
                         <div id="tab2" class="tab">
                             <div class="row">
                                 <div class="slick-multiItem">
-                                    @foreach (var item in Model.Results)
+                                    @foreach (var item in Model.UpComingMovies.Results)
                                     {
                                         <div class="slide-it">
                                             <partial name="_MovieItem" model="item" />
@@ -46,7 +45,7 @@
                         <div id="tab3" class="tab">
                             <div class="row">
                                 <div class="slick-multiItem">
-                                    @foreach (var item in Model.Results)
+                                    @foreach (var item in Model.TopRatedMovies.Results)
                                     {
                                         <div class="slide-it">
                                             <partial name="_MovieItem" model="item" />
@@ -58,7 +57,7 @@
                         <div id="tab4" class="tab">
                             <div class="row">
                                 <div class="slick-multiItem">
-                                    @foreach (var item in Model.Results)
+                                    @foreach (var item in Model.NowPlayingMovies.Results)
                                     {
                                         <div class="slide-it">
                                             <partial name="_MovieItem" model="item" />
@@ -69,10 +68,8 @@
                          </div>
                     </div>
                 </div>
-                @*DeveloperMovie*@
             </div>
         </div>
     </div>
-
 
 </div>

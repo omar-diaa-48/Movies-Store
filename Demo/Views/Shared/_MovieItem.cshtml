@@ -2,7 +2,7 @@
 @model SearchMovie
 @*@{
     Movie movie = await MovieLoadApi.LoadApi(Model.Id);
- }*@
+}*@
 <div class="movie-item">
     <div class="mv-img">
         <a href="#"><img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}") " alt="@Model.Title image" width="285" height="437"></a>

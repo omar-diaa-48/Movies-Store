@@ -1,0 +1,42 @@
+﻿
+@model SearchResultMovieModelView
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_SideLayout.cshtml";
+}
+
+<h1>Search Result</h1>
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="topbar-filter">
+        <p>Found <span>@Model.ResultList.Results.Count</span> in total</p>
+        <a class="list"><i class="ion-ios-list-outline "></i></a>
+        <a class="grid"><i class="ion-grid active"></i></a>
+    </div>
+    <div class="flex-wrap-movielist">
+        @if (Model.ResultList.Results.Count == 0)
+        {
+            <h1> No Movie Matched The Search</h1>
+        }
+        else
+        {
+            @foreach (var item in Model.ResultList.Results)
+            {
+                <div class="movie-item-style-2 movie-item-style-1">
+                    <img src="@($"https://image.tmdb.org/t/p/original{item.PosterPath}")" alt="">
+                    <div class="hvr-inner">
+                        <a href="moviesingle.html"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+                    </div>
+                    <div class="mv-item-infor">
+                        <h6><a asp-action="MovieDetails" asp-controller="Movies" asp-route-id="@item.Id">@item.Title</a></h6>
+                        <p class="rate"><i class="ion-android-star"></i><span>@item.VoteAverage</span> /10</p>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+

@@ -1,8 +1,8 @@
-﻿<!-- BEGIN | Header -->
+﻿
+
 <header class="ht-header">
     <div class="container">
         <nav class="navbar navbar-default navbar-custom">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header logo">
                 <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
@@ -12,9 +12,8 @@
                         <span></span>
                     </div>
                 </div>
-                <a asp-action="Home"><img class="logo" src="~/images/logo1.png" alt="" width="119" height="58"></a>
+                <a asp-action="Index" asp-controller="Home"><img class="logo" src="~/images/logo1.png" alt="" width="119" height="58"></a>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav flex-child-menu menu-left">
 
@@ -30,7 +29,7 @@
                             movies<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li><a href="movielist.html">Lates Movies</a></li>
+                            <li><a href="movielist.html">Latest Movies</a></li>
                             <li><a href="moviesingle.html">Most Popular Movies</a></li>
                             <li class="it-last"><a href="seriessingle.html">Old Movies</a></li>
                         </ul>
@@ -53,17 +52,24 @@
                     <li class="btn"><a asp-action="SignUp" asp-controller="User">sign up</a></li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </nav>
 
-        <!-- top search form -->
         <div class="top-search">
-            <select>
-                <option value="united">TV show</option>
-                <option value="saab">Others</option>
+            <select id="condition">
+                <option value="Title">Title</option>
+                <option value="Vote">Vote Average</option>
             </select>
-            <input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+            <input id="search" type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+            <span><a id="searchLink" style="color:beige;margin:20px;background:content-box;cursor:pointer;font-size:1.8rem"> Search </a></span>
         </div>
     </div>
 </header>
-<!-- END | Header -->
+
+<script>
+
+    document.querySelector("#searchLink").addEventListener("click", function () {
+        var condition = document.querySelector("#condition").value
+        var search = document.querySelector("#search").value
+        this.href = "https://localhost:44308/Movies/Search/"+condition+"/"+search;
+    })
+</script>

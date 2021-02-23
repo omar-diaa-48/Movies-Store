@@ -11,9 +11,26 @@ namespace Demo.Models
 {
     public class MovieListLoadApi
     {
-        public static async Task<SearchContainer<SearchMovie>> LoadApi()
+        public static async Task<SearchContainer<SearchMovie>> LoadApi(string required)
         {
-            string url = $"https://api.themoviedb.org/3/movie/upcoming?api_key=774138a66b45c3a757f0402c916b6966&language=en-US&page=1";
+            string url = "";
+            switch (required)
+            {
+                case "POPULAR":
+                    url = $"https://api.themoviedb.org/3/movie/popular?api_key=774138a66b45c3a757f0402c916b6966&language=en-US";
+                    break;
+                case "COMING SOON":
+                    url = $"https://api.themoviedb.org/3/movie/upcoming?api_key=774138a66b45c3a757f0402c916b6966&language=en-US";
+                    break;
+                case "TOP RATED":
+                    url = $"https://api.themoviedb.org/3/movie/top_rated?api_key=774138a66b45c3a757f0402c916b6966&language=en-US";
+                    break;
+                case "NOW PLAYING":
+                    url = $"https://api.themoviedb.org/3/movie/now_playing?api_key=774138a66b45c3a757f0402c916b6966&language=en-US";
+                    break;
+                default:
+                    break;
+            }
 
 
             using (HttpResponseMessage response = await ApiHelper.ApiClient.GetAsync(url))

@@ -1,5 +1,5 @@
 ﻿
-@model SearchContainer<SearchMovie>
+@model MoviesListsViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,7 +7,7 @@
 
 
 
-<partial name="_MoviesSlider" model="Model" />
+<partial name="_MoviesSlider" model="Model.UpComingMovies" />
 
 <partial name="_MoviesList" model="Model" />
 

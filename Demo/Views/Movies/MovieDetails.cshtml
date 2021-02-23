@@ -7,6 +7,8 @@
 }
 
 
+
+
 <div>
     <h2>@Model.Title</h2>
     <hr />
@@ -14,13 +16,7 @@
         <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="170" height="230" />
         @*<video src="@($"https://image.tmdb.org/t/p/original{Model.Videos.Results[0]}")" controls></video>*@
         <article>
-            Lorem ipsum dolor sits amet, consectetur adipiscing elit. Cras quis sem semper,
-            iaculis ipsum fermentum, egestas lectus. Donec vel efficitur leo, a condimentum erat.
-            Etiam gravida dolor eu elit tempor, sit amet placerat lectus auctor. Sed vehicula, nulla vel rutrum mollis,
-            ex diam feugiat elit, quis pretium nisi lorem et turpis. Donec facilisis quis leo in mollis. Cras fermentum nunc elit,
-            ut sodales ipsum facilisis nec. Aliquam sed erat dapibus ante ultricies lobortis. In ultrices, ex id convallis congue,
-            nibh augue gravida nisl, nec egestas nibh ex non tortor. Integer nec rutrum odio, id volutpat quam.
-            Mauris ultrices nunc nec elit commodo, quis suscipit eros blandit.
+            @Model.Overview
         </article>
     </div>
     <hr />
@@ -35,8 +31,11 @@
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
+            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")   @Model.VoteAverage/10   Votes:@Model.VoteCount
         </dd>
     </dl>
+
+    @*<partial name="_MovieItemSlider" model="@ViewBag.recommendedMovies" />*@
+
 </div>
 

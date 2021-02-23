@@ -54,9 +54,14 @@ namespace Demo
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                   name: "search",
+                   pattern: "{controller=Movies}/{action=Search}/{condition}/{search}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
