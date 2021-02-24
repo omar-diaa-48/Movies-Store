@@ -29,9 +29,9 @@
                             movies<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li><a href="movielist.html">Latest Movies</a></li>
-                            <li><a href="moviesingle.html">Most Popular Movies</a></li>
-                            <li class="it-last"><a href="seriessingle.html">Old Movies</a></li>
+                            <li><a asp-action="List" asp-controller="Movies" asp-route-condition="Latest">Latest Movies</a></li>
+                            <li><a asp-action="List" asp-controller="Movies" asp-route-condition="Popular">Most Popular Movies</a></li>
+                            <li class="it-last"><a asp-action="List" asp-controller="Movies" asp-route-condition="Soon">Coming Soon</a></li>
                         </ul>
                     </li>
 
@@ -55,12 +55,12 @@
         </nav>
 
         <div class="top-search">
-            <select id="condition">
+            <select id="condition" style="margin:10px">
                 <option value="Title">Title</option>
                 <option value="Vote">Vote Average</option>
             </select>
             <input id="search" type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
-            <span><a id="searchLink" style="color:beige;margin:20px;background:content-box;cursor:pointer;font-size:1.8rem"> Search </a></span>
+            <span><a id="searchLink" style="color:beige;margin:10px;background:content-box;cursor:pointer;font-size:1.8rem"> Search </a></span>
         </div>
     </div>
 </header>
