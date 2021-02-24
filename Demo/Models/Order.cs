@@ -15,12 +15,13 @@ namespace Demo.Models
 
         public decimal TotalPrice { get; set; }
 
-        public Movie[] OrderList { get; set; }
+        //public List<OrderedMovie> OrderList { get; set; }
 
         public int CustomerID { get; set; }
 
         public virtual Customer Customer { get; set; }
 
-        public virtual ICollection<MovieOrder> MovieOrder { get; set; }
+
+        public virtual ICollection<OrderedMovie> MovieOrder { get; set; }
     }
 }
