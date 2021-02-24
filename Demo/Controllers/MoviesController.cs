@@ -80,6 +80,32 @@ namespace Demo.Controllers
             return View(returnViewModel);
         }
 
+        public async Task<IActionResult> List(string condition)
+        {
+            await LoadListOfMovies();
+
+            var viewModel = new SearchResultMovieModelView();
+
+            switch (condition)
+            {
+                case "Latest":
+                    foreach (var item in nowPlayingMovies.Results)
+                        viewModel.ResultList.Results.Add(item);
+                    break;
+                case "Popular":
+                    foreach (var item in topRatedMovies.Results)
+                        viewModel.ResultList.Results.Add(item);
+                    break;
+                case "Soon":
+                    foreach (var item in upComingMovies.Results)
+                        viewModel.ResultList.Results.Add(item);
+                    break;
+                default:
+                    break;
+            }
+            return View("Search", viewModel);
+        }
+
         private void InitializeModel(SearchResultMovieModelView model)
         {
             foreach (var item in popularMovies.Results)
