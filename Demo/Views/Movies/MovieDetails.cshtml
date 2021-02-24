@@ -31,11 +31,41 @@
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
         <dd class="col-sm-10">
-            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")   @Model.VoteAverage/10   Votes:@Model.VoteCount
+            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")     
+            @*<a class="btn" href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0">IMDB</a>*@
+        </dd>
+        <dd>
+            <p><a href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0" class="imdb-logo">IMDb  @Model.VoteAverage/10  @Model.VoteCount</a></p>
         </dd>
     </dl>
 
     @*<partial name="_MovieItemSlider" model="@ViewBag.recommendedMovies" />*@
 
 </div>
+
+<style>
+    .imdb-logo {
+        font: 2em/1 Impact, HelveticaNeue-CondensedBold, sans-serif;
+        text-shadow: 0 0 .15em #fff;
+        text-decoration: none;
+        display: inline-block;
+        vertical-align: bottom;
+        padding: .25em .35em;
+        border-radius: .15em;
+        background: radial-gradient(#ffffb8, #ce981d);
+    }
+</style>
+
+@*<script>
+    (function (d, s, id)
+        {
+    var js, stags = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id))
+    { return; }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+    stags.parentNode.insertBefore(js, stags);
+    })(document, "script", "imdb-rating-api");
+</script*@>
 
