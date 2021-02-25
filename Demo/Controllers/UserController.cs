@@ -127,7 +127,7 @@ namespace Demo.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _singInManager.SignOutAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
 }
