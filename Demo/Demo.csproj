@@ -16,10 +16,13 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="PayPalCheckoutSdk" Version="1.0.3" />
     <PackageReference Include="PayPalHttp" Version="1.0.0" />
+<<<<<<< Updated upstream
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TMDbLib-master\TMDbLib\TMDbLib.csproj" />
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
 
   <ItemGroup>
