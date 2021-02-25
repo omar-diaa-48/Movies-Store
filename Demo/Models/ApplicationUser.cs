@@ -8,6 +8,6 @@ namespace Demo.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public int Age { get; set; }
+        //public int Age { get; set; }
     }
 }
