@@ -6,11 +6,12 @@
     Layout = "~/Views/Shared/_SideLayout.cshtml";
 }
 
+
 <h1>@Model.ViewTitle</h1>
 
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="topbar-filter">
-        <p>Found <span>@Model.ResultList.Results.Count</span> in total</p>
+    <div class="topbar-filter" style="background-color:#233a50 ">
+        <p style="font-weight:800;font-size:larger">Found <span style="font-weight:800;font-size:larger">@Model.ResultList.Results.Count</span> in total</p>
         <a class="list"><i class="ion-ios-list-outline "></i></a>
         <a class="grid"><i class="ion-grid active"></i></a>
     </div>
