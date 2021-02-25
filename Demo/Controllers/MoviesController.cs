@@ -28,11 +28,6 @@ namespace Demo.Controllers
             movie = await MovieLoadApi.LoadApi(id);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> MovieDetails(int id)
         {
             await LoadMovie(id);
@@ -66,7 +61,7 @@ namespace Demo.Controllers
             {
                 if(double.TryParse(search, out double vote))
                 {
-                    if (vote >= 10)
+                    if (vote >= 10 || vote <= 0)
                         vote = 0;
 
                     foreach (var item in resultViewModel.ResultList.Results)
@@ -76,11 +71,12 @@ namespace Demo.Controllers
                 }
             }
 
+            returnViewModel.ViewTitle = "Search Result";
 
             return View(returnViewModel);
         }
 
-        public async Task<IActionResult> List(string condition)
+        public async Task<IActionResult> ListMoviesByCategory(string condition)
         {
             await LoadListOfMovies();
 
@@ -91,19 +87,53 @@ namespace Demo.Controllers
                 case "Latest":
                     foreach (var item in nowPlayingMovies.Results)
                         viewModel.ResultList.Results.Add(item);
+                    viewModel.ViewTitle = "Latest Movies";
                     break;
                 case "Popular":
                     foreach (var item in topRatedMovies.Results)
                         viewModel.ResultList.Results.Add(item);
+                    viewModel.ViewTitle = "Popular Movies";
                     break;
                 case "Soon":
                     foreach (var item in upComingMovies.Results)
                         viewModel.ResultList.Results.Add(item);
+                    viewModel.ViewTitle = "Coming Soon Movies";
                     break;
                 default:
                     break;
             }
             return View("Search", viewModel);
+        }
+
+        public async Task<IActionResult> ListMoviesByGenre(int genre)
+        {
+            await LoadListOfMovies();
+
+            var resultViewModel = new SearchResultMovieModelView();
+            var returnViewModel = new SearchResultMovieModelView();
+
+            InitializeModel(resultViewModel);
+
+            foreach (var item in resultViewModel.ResultList.Results)
+                if (item.GenreIds.Contains(genre))
+                    returnViewModel.ResultList.Results.Add(item);
+
+            returnViewModel.ViewTitle = "By Genre";
+
+            return View("Search", returnViewModel);
+        }
+
+        public async Task<IActionResult> ListAllMovies()
+        {
+            await LoadListOfMovies();
+
+            var returnViewModel = new SearchResultMovieModelView();
+
+            InitializeModel(returnViewModel);
+
+            returnViewModel.ViewTitle = "All Movies";
+
+            return View("Search", returnViewModel);
         }
 
         private void InitializeModel(SearchResultMovieModelView model)

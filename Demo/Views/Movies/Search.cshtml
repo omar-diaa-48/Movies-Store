@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_SideLayout.cshtml";
 }
 
-<h1>Movies</h1>
+<h1>@Model.ViewTitle</h1>
 
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="topbar-filter">
@@ -26,10 +26,10 @@
                 <div class="movie-item-style-2 movie-item-style-1">
                     <img src="@($"https://image.tmdb.org/t/p/original{item.PosterPath}")" alt="">
                     <div class="hvr-inner">
-                        <a href="moviesingle.html"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+                        <a asp-action="MovieDetails" asp-controller="Movies" asp-route-id="@item.Id"> Read more <i class="ion-android-arrow-dropright"></i> </a>
                     </div>
                     <div class="mv-item-infor">
-                        <h6><a asp-action="MovieDetails" asp-controller="Movies" asp-route-id="@item.Id">@item.Title</a></h6>
+                        <h6>@item.Title</h6>
                         <p class="rate"><i class="ion-android-star"></i><span>@item.VoteAverage</span> /10</p>
                     </div>
                 </div>
