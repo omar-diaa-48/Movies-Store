@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 
-namespace PayPalDemo.Models
+namespace Demo.Models
 {
     public class CaptureOrderSample
     {

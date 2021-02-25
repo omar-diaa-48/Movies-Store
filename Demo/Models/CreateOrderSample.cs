@@ -6,11 +6,11 @@ using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 using PayPalHttp;
 
-namespace PayPalDemo.Models
+namespace Demo.Models
 {
     public class CreateOrderSample
     {
-        private static OrderRequest BuildRequestBody()
+        private static OrderRequest BuildRequestBody(PurchaseUnitRequest PUR)
         {
             OrderRequest orderRequest = new OrderRequest()
             {
@@ -18,124 +18,113 @@ namespace PayPalDemo.Models
 
                 ApplicationContext = new ApplicationContext
                 {
-                    BrandName = "EXAMPLE INC",
+                    BrandName = "Movie Store",
                     LandingPage = "BILLING",
-                    CancelUrl = "https://localhost:44397/Home/Error",
-                    ReturnUrl = "https://localhost:44397/Home/aproved",
+                    CancelUrl = "https://localhost:44308/Home/Error",
+                    ReturnUrl = "https://localhost:44308/User/aproved",
                     UserAction = "CONTINUE",
                     ShippingPreference = "SET_PROVIDED_ADDRESS"
                 },
-                PurchaseUnits = new List<PurchaseUnitRequest>
-                {
-                    new PurchaseUnitRequest{
-                        ReferenceId =  "PUHF",
-                        Description = "Sporting Goods",
-                        CustomId = "CUST-HighFashions",
-                        SoftDescriptor = "HighFashions",
-                        AmountWithBreakdown = new AmountWithBreakdown
-                        {
-                            CurrencyCode = "USD",
-                            Value = "220",
-                            AmountBreakdown = new AmountBreakdown
-                            {
-                                ItemTotal = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "180.00"
-                                },
-                                Shipping = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "20.00"
-                                },
-                                Handling = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "10.00"
-                                },
-                                TaxTotal = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "20.00"
-                                },
-                                ShippingDiscount = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "10.00"
-                                }
-                            }
-                        },
-                        Items = new List<Item>
-                        {
-                            new Item
-                            {
-                                Name = "T-shirt",
-                                Description = "Green XL",
-                                Sku = "sku01",
-                                UnitAmount = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "90.00"
-                                },
-                                Tax = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "10.00"
-                                },
-                                Quantity = "1",
-                                Category = "PHYSICAL_GOODS"
-                            },
-                            new Item
-                            {
-                                Name = "Shoes",
-                                Description = "Running, Size 10.5",
-                                Sku = "sku02",
-                                UnitAmount = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "45.00"
-                                },
-                                Tax = new Money
-                                {
-                                    CurrencyCode = "USD",
-                                    Value = "5.00"
-                                },
-                                Quantity = "2",
-                                Category = "PHYSICAL_GOODS"
-                            }
-                        },
-                        ShippingDetail = new ShippingDetail
-                        {
-                            Name = new Name
-                            {
-                                FullName = "Omar Gamal"
-                            },
-                            AddressPortable = new AddressPortable
-                            {
-                                AddressLine1 = "123 Townsend St",
-                                AddressLine2 = "Floor 6",
-                                AdminArea2 = "San Francisco",
-                                AdminArea1 = "CA",
-                                PostalCode = "94107",
-                                CountryCode = "US"
-                            }
-                        }
-                    }
-                }
+                PurchaseUnits = new List<PurchaseUnitRequest>{PUR}
             };
 
             return orderRequest;
         }
 
-        public async static Task<HttpResponse> CreateOrder( bool debug = false)
+        public async static Task<HttpResponse> CreateOrder(Demo.Models.Order order , bool debug = false)
         {
             var request = new OrdersCreateRequest();
             request.Headers.Add("prefer", "return=representation");
-            request.RequestBody(BuildRequestBody());
+            request.RequestBody(BuildRequestBody(ConvertOrderToItems(order)));
             var response = await PayPalClient.client().Execute(request);
             return response;
         }
-
+        private static PurchaseUnitRequest ConvertOrderToItems(Demo.Models.Order order)
+        {
+            List<Item> items = new List<Item>();
+            decimal totalTax=0;
+            foreach(var movie in order.MovieOrder)
+            {
+                Item i = new Item()
+                {
+                    Name = movie.Title,
+                    Description = "Movie",
+                    Sku = "sku" + movie.ID.ToString(),
+                    UnitAmount = new Money
+                    {
+                        CurrencyCode = "USD",
+                        Value = String.Format("{0:0.00}", movie.Price)
+                    },
+                    Tax = new Money
+                    {
+                        CurrencyCode = "USD",
+                        Value = String.Format("{0:0.00}", movie.Tax)
+                    },
+                    Quantity = "1",
+                    Category = "DIGITAL_GOODS"
+                };
+                totalTax += movie.Tax;
+                items.Add(i);
+            }
+            return new PurchaseUnitRequest
+            {
+                ReferenceId = "PUHF",
+                Description = "Entertainment",
+                CustomId = "CUST-EntertainmentMovies",
+                SoftDescriptor = "EntertainmentMovies",
+                AmountWithBreakdown = new AmountWithBreakdown
+                {
+                    
+                    CurrencyCode = "USD",
+                    Value = String.Format("{0:0.00}",(order.TotalPrice + totalTax + 5)),
+                    AmountBreakdown = new AmountBreakdown
+                    {
+                        ItemTotal = new Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = String.Format("{0:0.00}",order.TotalPrice)
+                        },
+                        Shipping = new Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = "5.00"
+                        },
+                        Handling = new Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = "0.00"
+                        },
+                        TaxTotal = new Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = String.Format("{0:0.00}",totalTax.ToString())
+                        },
+                        ShippingDiscount = new Money
+                        {
+                            CurrencyCode = "USD",
+                            Value = "0.00"
+                        }
+                    }
+                },
+                Items = items,
+                ShippingDetail = new ShippingDetail
+                {
+                    Name = new Name
+                    {
+                        FullName = "Omar Gamal"
+                    },
+                    AddressPortable = new AddressPortable
+                    {
+                        AddressLine1 = "123 Townsend St",
+                        AddressLine2 = "Floor 6",
+                        AdminArea2 = "San Francisco",
+                        AdminArea1 = "CA",
+                        PostalCode = "94107",
+                        CountryCode = "US"
+                    }
+                }
+            };
+        }
 
        
     }

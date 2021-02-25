@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -14,14 +14,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="PayPalCheckoutSdk" Version="1.0.3" />
+    <PackageReference Include="PayPalHttp" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TMDbLib-master\TMDbLib\TMDbLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\TMDbLib-master\TMDbLib\bin\Debug\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="TMDbLib">
-      <HintPath>..\TMDbLib-master\TMDbLib\bin\Debug\net45\TMDbLib.dll</HintPath>
     </Reference>
   </ItemGroup>
 

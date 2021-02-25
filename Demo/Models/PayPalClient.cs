@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PayPalDemo.Models
+namespace Demo.Models
 {
     public class PayPalClient
     {
@@ -16,9 +16,9 @@ namespace PayPalDemo.Models
         {
             SandboxEnvironment e = new SandboxEnvironment(
                  System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_ID") != null ?
-                 System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_ID") : "ATQs1jP2hNFdixVjb9cjWb6Z55-DtQz-KIL4j-z7WsZyFhRuET1IKKExeQUz9SXteaPGZJhV03E4kAd7",
+                 System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_ID") : "AUzXMqocpNRiSklEJVwW2NVAyFJWpM5W6HF3u5ZfE9Q84xWyzXd1trIKX531Z8oyU_62Dg0robvJHi9U",
                 System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_SECRET") != null ?
-                 System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_SECRET") : "EBzKgLm_JAyDuGcAnj1Qi5TRT0Xg9MfHZj-4fKq5F4xaf08gq4t5k4BMMLcDBGLRCFbsYHfcVG81jwCq");
+                 System.Environment.GetEnvironmentVariable("PAYPAL_CLIENT_SECRET") : "EBROKA7H9paW6bJ9CEY3xM0C3bBn1RmjmTutN68fdOa8X2RnyWskM4voyDP7r6bMesbfhjcrcGVCfkd1");
             return e;
         }
 

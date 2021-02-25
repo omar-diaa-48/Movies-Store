@@ -11,7 +11,17 @@ namespace Demo.Models
         public int ID { get; set; }
         public int MovieID { get; set; }
         public string Title { get; set; }
-        public decimal Price { get; set; }
+        private decimal price;
+        public decimal Price { 
+            get=>price;
+            set
+            {
+                price = value;
+                tax = (price * 3) / 100;
+            }
+        }
+        private decimal tax;
+        public decimal Tax { get=>tax;}
         public int OrderID { get; set; }
     }
 }
