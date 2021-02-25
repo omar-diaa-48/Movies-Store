@@ -2,6 +2,7 @@ using Demo.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +28,11 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MovieStoreDBContext>(
-                options=>options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
+                options => options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+             .AddEntityFrameworkStores<MovieStoreDBContext>()
+             .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
         }
@@ -50,6 +55,7 @@ namespace Demo
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

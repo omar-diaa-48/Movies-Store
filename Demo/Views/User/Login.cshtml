@@ -2,19 +2,19 @@
 
 @{
     Layout = "_SideLayout";
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "LogIn";
 }
 
 
 
-<h1>Sign Up</h1>
+<h1>Log In</h1>
 
 <h4>Customer</h4>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form action="/User/Register" method="post">
+        <form action="/User/Login" method="post">
             <div asp-validation-summary="ModelOnly" class=""></div>
             <div class="">
                 <label asp-for="UserName" class=""></label>
@@ -77,7 +77,7 @@
                     <span asp-validation-for="PhoneNo" class=""></span>
                 </div>*@
             <div class="">
-                <input type="submit" value="Sign Up" class="" />
+                <input type="submit" value="Log In" class="" />
             </div>
         </form>
     </div>
@@ -94,3 +94,5 @@
 @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+
+
