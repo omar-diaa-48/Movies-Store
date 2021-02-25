@@ -25,13 +25,26 @@
                         <a class="ion-home" asp-action="Index" asp-controller="Home"> Home</a>
                     </li>
                     <li class="dropdown first">
-                        <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                        <a asp-action="ListAllMovies" asp-controller="Movies" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
                             movies<i class="fa fa-angle-down" aria-hidden="true"></i>
                         </a>
                         <ul class="dropdown-menu level1">
-                            <li><a asp-action="List" asp-controller="Movies" asp-route-condition="Latest">Latest Movies</a></li>
-                            <li><a asp-action="List" asp-controller="Movies" asp-route-condition="Popular">Most Popular Movies</a></li>
-                            <li class="it-last"><a asp-action="List" asp-controller="Movies" asp-route-condition="Soon">Coming Soon</a></li>
+                            <li><a asp-action="ListMoviesByCategory" asp-controller="Movies" asp-route-condition="Latest">Latest Movies</a></li>
+                            <li><a asp-action="ListMoviesByCategory" asp-controller="Movies" asp-route-condition="Popular">Most Popular Movies</a></li>
+                            <li class="it-last"><a asp-action="ListMoviesByCategory" asp-controller="Movies" asp-route-condition="Soon">Coming Soon</a></li>
+                            <li class="dropdown">
+                                <a @*href="#"*@ class="dropdown-toggle" data-toggle="dropdown">Genre<i class="ion-ios-arrow-forward"></i></a>
+                                <ul class="dropdown-menu level2">
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="12"> Adventure </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="28"> Action </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="18"> Drama </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="35"> Comedy </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="10751"> Family </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="16"> Animation </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="14"> Fantasy </a></li>
+                                    <li><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="10749"> Romance </a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
 
@@ -40,7 +53,7 @@
                     </li>
 
                     <li>
-                        <a asp-action="About" asp-controller="Home">About</a>
+                        <a class="ion-ios-book" asp-action="About" asp-controller="Home"> About</a>
                     </li>
 
                 </ul>
@@ -56,16 +69,22 @@
 
         <div class="top-search">
             <select id="condition" style="margin:10px">
-                <option value="Title">Title</option>
+                <option value="Title">Movie Title</option>
                 <option value="Vote">Vote Average</option>
             </select>
-            <input id="search" type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
+            <input id="search" type="text" placeholder="Search for a movie that you are looking for">
             <span><a id="searchLink" style="color:beige;margin:10px;background:content-box;cursor:pointer;font-size:1.8rem"> Search </a></span>
         </div>
     </div>
 </header>
 
 <script>
+    document.querySelector("#condition").addEventListener("change", function () {
+        if (this.value == "Title")
+            document.querySelector("#search").type = "text"
+        else if (this.value == "Vote")
+            document.querySelector("#search").type = "number"
+    })
 
     document.querySelector("#searchLink").addEventListener("click", function () {
         var condition = document.querySelector("#condition").value

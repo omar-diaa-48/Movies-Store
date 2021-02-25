@@ -2,7 +2,7 @@
 @model Movie
 
 @{
-    ViewData["Title"] = "MovieDetails";
+    ViewData["Title"] = "Movie Details";
     Layout = "~/Views/Shared/_SideLayout.cshtml";
 }
 
@@ -13,29 +13,51 @@
     <h2>@Model.Title</h2>
     <hr />
     <div>
-        <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="170" height="230" />
-        @*<video src="@($"https://image.tmdb.org/t/p/original{Model.Videos.Results[0]}")" controls></video>*@
-        <article>
-            @Model.Overview
-        </article>
+        @foreach (var item in Model.Genres)
+        {
+            <h4><a asp-action="ListMoviesByGenre" asp-controller="Movies" asp-route-genre="@item.Id">@item.Name</a></h4>
+        }
     </div>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
+            <img src="@($"https://image.tmdb.org/t/p/original{Model.PosterPath}")" alt="@Model.Title image" class="trailer-img" width="230" height="300" style="margin-top:0" />
+            @*<video src="@($"https://image.tmdb.org/t/p/original{Model.Videos.Results[0]}")" controls></video>*@
+        </dt>
+        <dd class="col-sm-9">
+            <h4>
+                @Html.DisplayFor(model => model.Tagline)
+            </h4>
+        </dd>
+        <dt class="col-sm-3 text-danger">
+            @Html.DisplayNameFor(model => model.Overview)
+        </dt>
+        <dd class="col-sm-9">
+            <article>
+                @Model.Overview
+            </article>
+        </dd>
+        <dt class="col-sm-3 text-danger">
             @Html.DisplayNameFor(model => model.OriginalTitle)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.OriginalTitle)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3 text-danger">
             @Html.DisplayNameFor(model => model.ReleaseDate)
         </dt>
-        <dd class="col-sm-10">
-            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")     
+        <dd class="col-sm-9">
+            @Model.ReleaseDate.Value.ToString("dd MMMM yyyy")
             @*<a class="btn" href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0">IMDB</a>*@
         </dd>
-        <dd>
-            <p><a href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0" class="imdb-logo">IMDb  @Model.VoteAverage/10  @Model.VoteCount</a></p>
+        <dd class="col-sm-9">
+            <p>
+                <a href="https://www.imdb.com/title/@Model.ImdbId/?ref_=nv_sr_srsg_0" class="imdb-logo">
+                    IMDb  @if (Model.VoteAverage > 0)
+                    {@Model.VoteAverage;
+                }
+                </a>
+            </p>
         </dd>
     </dl>
 
@@ -55,5 +77,3 @@
         background: radial-gradient(#ffffb8, #ce981d);
     }
 </style>
-
-

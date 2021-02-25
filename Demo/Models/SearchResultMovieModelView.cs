@@ -15,5 +15,7 @@ namespace Demo.Models
             ResultList.Results = new List<SearchMovie>();
         }
         public SearchContainer<SearchMovie> ResultList { get; set; }
+
+        public string ViewTitle { get; set; }
     }
 }
