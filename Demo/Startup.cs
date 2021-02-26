@@ -29,17 +29,16 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MovieStoreDBContext>(
-<<<<<<< Updated upstream
+
                 options => options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<MovieStoreDBContext>()
              .AddDefaultTokenProviders();
 
-=======
-                options=>options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
+               
             services.AddScoped<Order>(sp => OrderServiceRepo.Getorder(sp));
->>>>>>> Stashed changes
+
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddSession();
