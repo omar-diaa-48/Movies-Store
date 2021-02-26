@@ -63,6 +63,9 @@
 
     @*<partial name="_MovieItemSlider" model="@ViewBag.recommendedMovies" />*@
 
+    <p class="button">
+        <a class="btn btn-primary" asp-controller="Orders" asp-action="AddToShoppingCart" asp-route-movieid="@Model.Id">Add To Cart</a>
+    </p>
 </div>
 
 <style>

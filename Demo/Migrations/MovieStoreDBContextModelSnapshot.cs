@@ -186,6 +186,9 @@ namespace Demo.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CountItems")
+                        .HasColumnType("int");
+
                     b.Property<int>("MovieID")
                         .HasColumnType("int");
 

@@ -47,6 +47,7 @@ namespace Demo.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        //shoppingCartItem
         public DbSet<OrderedMovie> OrderedMovies { get; set; }
 
     }

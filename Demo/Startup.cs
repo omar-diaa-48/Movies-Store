@@ -1,4 +1,5 @@
 using Demo.Models;
+using Demo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,13 +29,21 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MovieStoreDBContext>(
+<<<<<<< Updated upstream
                 options => options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<MovieStoreDBContext>()
              .AddDefaultTokenProviders();
 
+=======
+                options=>options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
+            services.AddScoped<Order>(sp => OrderServiceRepo.Getorder(sp));
+>>>>>>> Stashed changes
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddSession();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +60,7 @@ namespace Demo
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();
