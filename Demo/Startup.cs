@@ -32,10 +32,19 @@ namespace Demo
 
                 options => options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config=>
+            {
+                config.Password.RequiredUniqueChars = 0;
+                config.Password.RequireNonAlphanumeric = false;
+            })
                      .AddEntityFrameworkStores<MovieStoreDBContext>()
                      .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "BlockBusterCookie";
+                config.LoginPath = "/User/Login";
+            });
                
             services.AddScoped<Order>(sp => OrderServiceRepo.Getorder(sp));
 

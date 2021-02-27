@@ -5,18 +5,18 @@
 <ul class="nav navbar-nav flex-child-menu menu-right">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li><a asp-action="BuyMovies" asp-controller="User">Cart</a></li>
+        <li><a asp-action="Index" asp-controller="Orders">Cart</a></li>
         <li class="nav-item">
-            <a class="nav-link text-dark" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link text-dark" title="Manage">Hello @User.Identity.Name !</a>
         </li>
         <li class="btn"><a asp-action="Logout" asp-controller="User">Logout</a></li>
 
     }
     else
     {
-        <li><a asp-action="BuyMovies" asp-controller="User"> Cart </a></li>
+        <li><a asp-action="Index" asp-controller="Orders"> Cart </a></li>
         <li class="btn" style="margin-left:5px"><a asp-action="Login" asp-controller="User"> Log In </a></li>
-        <li class="btn" style="margin-left:5px"><a asp-action="Register" asp-controller="User"> Sign Up </a></li>
+        <li class="btn" style="margin-left:5px"><a asp-action="SignUp" asp-controller="User"> Sign Up </a></li>
 
     }
 </ul>

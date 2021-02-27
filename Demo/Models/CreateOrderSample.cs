@@ -30,7 +30,6 @@ namespace Demo.Models
 
             return orderRequest;
         }
-
         public async static Task<HttpResponse> CreateOrder(Demo.Models.Order order , bool debug = false)
         {
             var request = new OrdersCreateRequest();
@@ -124,8 +123,6 @@ namespace Demo.Models
                     }
                 }
             };
-        }
-
-       
+        }    
     }
 }

@@ -33,17 +33,14 @@ namespace Demo.Controllers
             return View();
         }
 
-        public IActionResult BuyMovies()
+        public async Task<IActionResult> BuyMovies()
         {
-            Demo.Models.Order order = new Demo.Models.Order
+            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var order = new Demo.Models.Order
             {
-                CustomerID = 1,
-                Customer = new Customer()
-                {
-                    Address = "Focak many",
-                    ID = 1,
-                },
-                ID = 1,
+                CustomerID = customer.Id,
+                Customer = customer,
                 MovieOrder = new List<OrderedMovie>() {
                     new OrderedMovie() {
                         ID = 1,
@@ -69,6 +66,7 @@ namespace Demo.Controllers
                 },
                 TotalPrice = 210
             };
+
             var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;
             createOrderResult = createOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
             return Redirect(createOrderResult.Links[1].Href);
@@ -91,6 +89,7 @@ namespace Demo.Controllers
         public async Task<IActionResult> Login(string UserName, string password)
         {
             var user = await _userManager.FindByNameAsync(UserName);
+
             if (user != null)
             {
                 var signInResult = await _singInManager.PasswordSignInAsync(user, password, false, false);
@@ -99,7 +98,8 @@ namespace Demo.Controllers
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
             }
-            return RedirectToAction("Index", "Home", new { area = "" });
+
+            return RedirectToAction("Login");
         }
 
         public IActionResult Register()
@@ -108,23 +108,33 @@ namespace Demo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string UserName, string Password)
+        public async Task<IActionResult> Register(ApplicationUser AppUser, string Password)
         {
-            var user = new ApplicationUser
+            var newUser = new ApplicationUser
             {
-                UserName = UserName,
+                UserName = AppUser.UserName,
+                Email = AppUser.Email,
+                FirstName = AppUser.FirstName,
+                LastName = AppUser.LastName,
+                PhoneNumber = AppUser.PhoneNumber,
+                Address = AppUser.Address,
+                Gender = AppUser.Gender,
+                BirthDate = AppUser.BirthDate
             };
-            var result = await _userManager.CreateAsync(user, Password);
+
+            var result = await _userManager.CreateAsync(newUser, Password);
+
             if (result.Succeeded)
             {
                 //Sign in here 
-                var signInResult = await _singInManager.PasswordSignInAsync(user, Password, false, false);
+                var signInResult = await _singInManager.PasswordSignInAsync(newUser, Password, false, false);
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
             }
-            return RedirectToAction("Index", "Home", new { area = "" });
+
+            return RedirectToAction("SignUp");
         }
 
         public async Task<IActionResult> LogOut()

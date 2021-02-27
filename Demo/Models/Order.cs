@@ -26,9 +26,9 @@ namespace Demo.Models
 
         //public List<OrderedMovie> OrderList { get; set; }
 
-        public int CustomerID { get; set; }
+        public string CustomerID { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual ApplicationUser Customer { get; set; }
 
 
         public virtual ICollection<OrderedMovie> MovieOrder { get; set; }

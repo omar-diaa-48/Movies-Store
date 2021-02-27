@@ -17,6 +17,7 @@ namespace Demo.Models
 
         }
 
+        #region Many to many relation
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<MovieOrder>()
@@ -42,12 +43,23 @@ namespace Demo.Models
         //        cs.ToTable("MovieOrder");
         //    });
         //    base.OnModelCreating(modelBuilder);
-        //}
+        //} 
+        #endregion
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ApplicationUser>()
+                .HasIndex(b => b.UserName)
+                .IsUnique();
+
+            base.OnModelCreating(builder);
+        }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        //shoppingCartItem
+
+        //ShoppingCartItem
         public DbSet<OrderedMovie> OrderedMovies { get; set; }
 
     }

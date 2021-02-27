@@ -10,19 +10,20 @@ using TMDbLib.Objects.Search;
 
 namespace Demo.Controllers
 {
-    public class Orders : Controller
+    public class OrdersController : Controller
     {
         private readonly MovieStoreDBContext _moviestroedbcontext;
         private readonly Order _order;
         private readonly OrderServiceRepo _OrderServiceRepo;
         SearchContainer<SearchMovie> popularMovies, upComingMovies, topRatedMovies, nowPlayingMovies;
 
-        public Orders(MovieStoreDBContext moviestroedbcontext, Order order)
+        public OrdersController(MovieStoreDBContext moviestroedbcontext, Order order)
         {
             this._moviestroedbcontext = moviestroedbcontext;
             this._order = order;
             _OrderServiceRepo = new OrderServiceRepo(moviestroedbcontext);
         }
+
         private async Task LoadListOfMovies()
         {
             popularMovies = await MovieListLoadApi.LoadApi("POPULAR");
@@ -43,6 +44,7 @@ namespace Demo.Controllers
             };
             return View(shoppingCartViewModel);
         }
+
         public async Task<RedirectToActionResult> AddToShoppingCart(int movieId)
         {
             await LoadListOfMovies();
@@ -56,7 +58,6 @@ namespace Demo.Controllers
             return RedirectToAction("Index");
         }
 
-
         public async Task<RedirectToActionResult> RemoveFromShoppingCart(int movieId)
         {
             await LoadListOfMovies();
@@ -69,6 +70,7 @@ namespace Demo.Controllers
             }
             return RedirectToAction("Index");
         }
+
         private void InitializeModel(SearchResultMovieModelView model)
         {
             foreach (var item in popularMovies.Results)
