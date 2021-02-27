@@ -14,9 +14,10 @@ namespace Demo.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _singInManager;
-
         private static PayPalCheckoutSdk.Orders.Order createOrderResult;
-        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInMManager)
+
+        public UserController(UserManager<ApplicationUser> userManager, 
+                                SignInManager<ApplicationUser> signInMManager)
         {
             _userManager = userManager;
             _singInManager = signInMManager;
@@ -31,6 +32,7 @@ namespace Demo.Controllers
         {
             return View();
         }
+
         public IActionResult BuyMovies()
         {
             Demo.Models.Order order = new Demo.Models.Order
@@ -71,23 +73,24 @@ namespace Demo.Controllers
             createOrderResult = createOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
             return Redirect(createOrderResult.Links[1].Href);
         }
-        public IActionResult aproved()
+
+        public IActionResult Approved()
         {
             var captureOrderResponse = CaptureOrderSample.CaptureOrder(createOrderResult.Id, true).Result;
             var captureOrderResult = captureOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
             return RedirectToAction("Index", new { Controller = "Home" });
         }
 
-
         public IActionResult Login()
         {
 
             return View();
         }
+
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(string UserName, string password)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(UserName);
             if (user != null)
             {
                 var signInResult = await _singInManager.PasswordSignInAsync(user, password, false, false);
@@ -98,23 +101,24 @@ namespace Demo.Controllers
             }
             return RedirectToAction("Index", "Home", new { area = "" });
         }
+
         public IActionResult Register()
         {
             return View("SignUp");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register(string UserName, string Password)
         {
             var user = new ApplicationUser
             {
-                UserName = username,
+                UserName = UserName,
             };
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, Password);
             if (result.Succeeded)
             {
                 //Sign in here 
-                var signInResult = await _singInManager.PasswordSignInAsync(user, password, false, false);
+                var signInResult = await _singInManager.PasswordSignInAsync(user, Password, false, false);
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
@@ -122,7 +126,6 @@ namespace Demo.Controllers
             }
             return RedirectToAction("Index", "Home", new { area = "" });
         }
-
 
         public async Task<IActionResult> LogOut()
         {

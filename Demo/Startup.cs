@@ -33,8 +33,8 @@ namespace Demo
                 options => options.UseSqlServer(Configuration.GetConnectionString("ConnString")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-             .AddEntityFrameworkStores<MovieStoreDBContext>()
-             .AddDefaultTokenProviders();
+                     .AddEntityFrameworkStores<MovieStoreDBContext>()
+                     .AddDefaultTokenProviders();
 
                
             services.AddScoped<Order>(sp => OrderServiceRepo.Getorder(sp));
@@ -62,9 +62,10 @@ namespace Demo
             app.UseSession();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

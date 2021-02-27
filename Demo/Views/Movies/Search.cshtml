@@ -6,16 +6,15 @@
     Layout = "~/Views/Shared/_SideLayout.cshtml";
 }
 
-
 <h1>@Model.ViewTitle</h1>
 
 <div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="topbar-filter" style="background-color:#233a50 ">
+    <div class="topbar-filter fw" style="background-color:#233a50 ">
         <p style="font-weight:800;font-size:larger;padding:5px">Found <span style="font-weight:800;font-size:larger">@Model.ResultList.Results.Count</span> in total</p>
         @*<a class="list"><i class="ion-ios-list-outline "></i></a>*@
         <a class="grid"><i class="ion-grid active"></i></a>
     </div>
-    <div class="flex-wrap-movielist">
+    <div class="flex-wrap-movielist mv-grid-fw">
         @if (Model.ResultList.Results.Count == 0)
         {
             <h1> No Movie Matched The Search</h1>
