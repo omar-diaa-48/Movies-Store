@@ -16,7 +16,7 @@ namespace Demo.Components
 
         public IViewComponentResult Invoke(string id)
         {
-            var items = _order.GetShoppingCartItems(id);
+            var items = _order.GetShoppingCartItems();
             _order.OrderedMovies = items;
             ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel()
             {

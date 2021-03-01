@@ -53,7 +53,7 @@ namespace Demo.Controllers
             {
                 foreach (var item in resultViewModel.ResultList.Results)
                     if (item.Title.ToLower().Contains(search.ToLower()))
-                        if (!returnViewModel.ResultList.Results.Contains(item))
+                        if (!returnViewModel.ResultList.Results.Any(m=>m.Title == item.Title))
                             returnViewModel.ResultList.Results.Add(item);
 
             }

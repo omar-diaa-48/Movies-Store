@@ -45,13 +45,17 @@ namespace Demo.Controllers
             movie = await MovieLoadApi.LoadApi(id);
         }
 
-        public async Task<IActionResult> Index()//int CartID
+        public async Task<IActionResult> Index()
         {
+            ApplicationUser customer = null;
             ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel();
 
-            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            if(User.Identity.Name != null)
+            {
+                customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
 
-            if(customer != null)
+            if (customer != null)
             {
                 var order = _context.Orders.FirstOrDefault(o => o.CustomerID == customer.Id);
 
@@ -62,7 +66,7 @@ namespace Demo.Controllers
             }
             else
             {
-                _order.OrderedMovies = _order.GetShoppingCartItems(customer.Id);//edit
+                _order.OrderedMovies = _order.GetShoppingCartItems();//edit
 
                 shoppingCartViewModel = new ShoppingCartViewModel()
                 {
@@ -76,14 +80,18 @@ namespace Demo.Controllers
             return View(shoppingCartViewModel);
         }
 
-        public async Task<RedirectToActionResult> AddToShoppingCart(int movieId)
+        public async Task<IActionResult> AddToShoppingCart(int movieId)
         {
+            ApplicationUser customer = null;
             var flag = false;
 
             await LoadMovie(movieId);
 
-            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
-
+            if(User.Identity.Name != null)
+            {
+                customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+                
             if (movie != null)
             {
                 if(customer != null)
@@ -109,22 +117,80 @@ namespace Demo.Controllers
                 }
                 else
                 {
-
+                    _order.AddToCart(movie);
                 }
             }         
 
             return RedirectToAction("Index");
         }
 
-        public async Task<RedirectToActionResult> RemoveFromShoppingCart(int movieId)
+        public async Task<IActionResult> IncreaseAmountToMovieOrder(string orderId, int movieId)
         {
-            await LoadListOfMovies();
-            var searchResultModel = new SearchResultMovieModelView();
-            InitializeModel(searchResultModel);
-            var selectedmovie = searchResultModel.ResultList.Results.FirstOrDefault(e => e.Id == movieId);
-            if (selectedmovie != null)
+            var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
+
+            if(order != null)
             {
-                _order.RemoveFromCart(selectedmovie);
+                var orderedMovie = order.OrderedMovies.FirstOrDefault(o => o.MovieId == movieId);
+                orderedMovie.Amount++;
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> RemoveFromShoppingCart(string orderId, int movieId)
+        {
+            ApplicationUser customer = null;
+
+            if(User.Identity.Name != null)
+            {
+                customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+
+            if(customer != null)
+            {
+                var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
+
+                if(order != null)
+                {
+                    var orderedMovie = order.OrderedMovies.FirstOrDefault(o => o.MovieId == movieId);
+                    orderedMovie.Amount--;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                await LoadListOfMovies();
+                var searchResultModel = new SearchResultMovieModelView();
+                InitializeModel(searchResultModel);
+                var selectedmovie = searchResultModel.ResultList.Results.FirstOrDefault(e => e.Id == movieId);
+                if (selectedmovie != null)
+                {
+                    _order.RemoveFromCart(selectedmovie);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteOrder(string orderId)
+        {
+            ApplicationUser customer = null;
+
+            if(User.Identity.Name != null)
+            {
+                customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+            
+            if (customer != null)
+            {
+                var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
+
+                if (order != null)
+                {
+                    order.OrderedMovies.Clear();
+                    await _context.SaveChangesAsync();
+                }
             }
             return RedirectToAction("Index");
         }

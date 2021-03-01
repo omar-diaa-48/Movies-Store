@@ -2,7 +2,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-@*@await Component.InvokeAsync("OrderSummary")*@
+
 
 <ul class="nav navbar-nav flex-child-menu menu-right">
     @if (SignInManager.IsSignedIn(User))
@@ -16,6 +16,7 @@
     }
     else
     {
+        @await Component.InvokeAsync("OrderSummary")
         <li><a asp-action="Index" asp-controller="Orders"> Cart </a></li>
         <li class="btn" style="margin-left:5px"><a asp-action="Login" asp-controller="User"> Log In </a></li>
         <li class="btn" style="margin-left:5px"><a asp-action="SignUp" asp-controller="User"> Sign Up </a></li>

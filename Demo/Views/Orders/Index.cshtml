@@ -5,45 +5,59 @@
 
 <h2>Your Shopping Cart</h2>
 <hr />
-<h4> Here are your favourite movies you selected </h4>
-<hr />
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Selected amount</th>
-            <th>Movie</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Sub total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Order.OrderedMovies)
-        {
+
+@if (Model.Order.OrderedMovies.Count == 0)
+{
+    <h3>You didn't add any movie to you cart, See out list of <a asp-action="Index" asp-controller="Home">Movies</a></h3>
+}
+else
+{
+    <h4> Here are your favourite movies you selected </h4>
+    <hr />
+    <table class="table table-dark">
+        <thead>
             <tr>
-                <td class="text-center"> @item.Amount</td>
-                <td class="text-center">@item.Title</td>
-                <td class="text-center">10</td>
-                <td class="text-right">
-                    @((item.Amount * 10).ToString("c"))
+                <th class="text-center">Selected amount</th>
+                <th class="text-center">Movie</th>
+                <th class="text-center">Price</th>
+                <th class="text-center">Sub total</th>
+                <th class="text-center">Adjust</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order.OrderedMovies)
+            {
+                <tr>
+                    <td class="text-center"> @item.Amount</td>
+                    <td class="text-center">@item.Title</td>
+                    <td class="text-center">10</td>
+                    <td class="text-center">
+                        @((item.Amount * 10).ToString("c"))
+                    </td>
+                    <td>
+                        <a class="btn btn-success text-center font-weight-bolder" asp-action="IncreaseAmountToMovieOrder" asp-controller="Orders" asp-route-orderId="@Model.Order.OrderId" asp-route-movieId="@item.MovieId">+</a>
+                        <a class="btn btn-danger text-center font-weight-bolder" asp-action="RemoveFromShoppingCart" asp-controller="Orders" asp-route-orderId="@Model.Order.OrderId" asp-route-movieId="@item.MovieId">-</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right">Total :</td>
+                <td class="text-center">
+                    @Model.OrderTotal.ToString("c")
                 </td>
                 <td>
-                    <a class="btn btn-primary" asp-action="RemoveFromShoppingCart" asp-controller="Orders" asp-route-movieId="@item.MovieId">Remove from cart</a>
+                    <a class="btn btn-danger text-center" asp-action="DeleteOrder" asp-controller="Orders" asp-route-orderId="@Model.Order.OrderId">Delete Order</a>
                 </td>
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3" class="text-right">Total :</td>
-            <td class="text-right">
-                @Model.OrderTotal.ToString("c")
-            </td>
-        </tr>
-    </tfoot>
-</table>
+        </tfoot>
+    </table>
+    <p class="button">
+        <a class="btn btn-success mt-3" asp-controller="Orders" asp-action="Checkout" asp-route-orderId="@Model.Order.OrderId">Check Out</a>
+    </p>
+}
+<hr />
 <p class="button">
-    <a class="btn btn-primary" asp-controller="Orders" asp-action="Checkout" asp-route-orderId="@Model.Order.OrderId">Check Out</a>
-</p>
-<p class="button">
-    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back To Home</a>
+    <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="Index">Back To Home</a>
 </p>

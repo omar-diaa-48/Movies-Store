@@ -38,6 +38,14 @@ namespace Demo.Models
 
         public List<OrderedMovie> OrderedMovies { get; set; }
 
+
+
+
+
+
+
+
+
         public static Order Getorder(IServiceProvider services)
         {
 
@@ -84,79 +92,95 @@ namespace Demo.Models
             //  return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
 
-        public void AddToCart(Movie movie, string id)
+        public void AddToCart(Movie movie)
         {
             int mymovieid = movie.Id;
 
-            var myordermovie =
-                    _appDbContext.OrderedMovies.Include(s => s.Order).SingleOrDefault(
-                        s => s.MovieId == mymovieid && s.Order.OrderId == OrderId);
+            //var myordermovie =
+            //        _appDbContext.OrderedMovies.Include(s => s.Order).SingleOrDefault(
+            //            s => s.MovieId == mymovieid && s.Order.OrderId == OrderId);
 
+            var myordermovie = MovieToOrderedMovie(movie);
 
-            _appDbContext.Orders.Where(o => o.CustomerID == id);
+            if (OrderedMovies.Any(o => o.Title == myordermovie.Title))
+                OrderedMovies.FirstOrDefault(o => o.Title == myordermovie.Title).Amount++;
+            else
+                OrderedMovies.Add(myordermovie);
 
             //var shoppingCartItem =
             //        _appDbContext.ShoppingCartItems.SingleOrDefault(
             //            s => s.Movie.Id == movie.Id && s.ShoppingCartId == ShoppingCartId);
 
-            if (myordermovie == null)
-            {
-                myordermovie = new OrderedMovie
-                {
-                    OrderId = OrderId,
-                    MovieId = mymovieid,
-                    //Movie = movie,
-                    Amount = 1
-                };
+            //if (myordermovie == null)
+            //{
+            //    myordermovie = new OrderedMovie
+            //    {
+            //        OrderId = OrderId,
+            //        MovieId = mymovieid,
+            //        //Movie = movie,
+            //        Amount = 1
+            //    };
 
-                _appDbContext.OrderedMovies.Add(myordermovie);
-            }
-            else
-            {
-                myordermovie.Amount++;
-            }
-            _appDbContext.SaveChanges();
+            //    _appDbContext.OrderedMovies.Add(myordermovie);
+            //}
+            //else
+            //{
+            //    myordermovie.Amount++;
+            //}
+            //_appDbContext.SaveChanges();
         }
 
         public int RemoveFromCart(SearchMovie movie)
         {
-            int mymovieid = movie.Id;
-            var shoppingCartItem =
-                    _appDbContext.OrderedMovies.SingleOrDefault(
-                        s => s.MovieId == mymovieid && s.OrderId == OrderId);
+            //int mymovieid = movie.Id;
+            //var shoppingCartItem =
+            //        _appDbContext.OrderedMovies.SingleOrDefault(
+            //            s => s.MovieId == mymovieid && s.OrderId == OrderId);
             //var shoppingCartItem =
             //        _appDbContext.ShoppingCartItems.SingleOrDefault(
             //            s => s.Movie.Id == movie.Id && s.ShoppingCartId == ShoppingCartId);
 
-            var localAmount = 0;
+            if (OrderedMovies.Any(o => o.MovieId == movie.Id))
+                OrderedMovies.FirstOrDefault(o => o.MovieId == movie.Id).Amount--;
+            else
+                OrderedMovies.Remove(OrderedMovies.FirstOrDefault(o => o.MovieId == movie.Id));
 
-            if (shoppingCartItem != null)
-            {
-                if (shoppingCartItem.Amount > 1)
-                {
-                    shoppingCartItem.Amount--;
-                    localAmount = shoppingCartItem.Amount;
-                }
-                else
-                {
-                    _appDbContext.OrderedMovies.Remove(shoppingCartItem);
-                }
-            }
+            //if (shoppingCartItem != null)
+            //{
+            //    if (shoppingCartItem.Amount > 1)
+            //    {
+            //        shoppingCartItem.Amount--;
+            //        localAmount = shoppingCartItem.Amount;
+            //    }
+            //    else
+            //    {
+            //        _appDbContext.OrderedMovies.Remove(shoppingCartItem);
+            //    }
+            //}
 
-            _appDbContext.SaveChanges();
+            //_appDbContext.SaveChanges();
 
-            return localAmount;
+            return OrderedMovies.FirstOrDefault(o=>o.MovieId == movie.Id).Amount;
         }
 
-        public List<OrderedMovie> GetShoppingCartItems(string id)
+        public List<OrderedMovie> GetShoppingCartItems()
         {
-            var order = _appDbContext.Orders.FirstOrDefault(o => o.CustomerID == id);
-
             return OrderedMovies ??
                    (OrderedMovies =
                        _appDbContext.OrderedMovies.Where(c => c.OrderId == OrderId)
                            //.Include(s => s.movititle)
                            .ToList());
+        }
+
+        private OrderedMovie MovieToOrderedMovie(Movie movie)
+        {
+            return new OrderedMovie
+            {
+                MovieId = movie.Id,
+                Title = movie.Title,
+                Amount = 1,
+                Price = 10,
+            };
         }
 
         public void ClearCart()
