@@ -7,7 +7,7 @@ using TMDbLib.Objects.Search;
 
 namespace Demo.Models
 {
-    public class SearchResultMovieModelView 
+    public class SearchResultMovieModelView
     {
         public SearchResultMovieModelView()
         {

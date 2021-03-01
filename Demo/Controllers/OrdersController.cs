@@ -6,22 +6,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
+using Microsoft.AspNetCore.Identity;
 
 namespace Demo.Controllers
 {
     public class OrdersController : Controller
     {
+        Movie movie;
         private readonly MovieStoreDBContext _moviestroedbcontext;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private static PayPalCheckoutSdk.Orders.Order createOrderResult;
         private readonly Order _order;
-        private readonly OrderServiceRepo _OrderServiceRepo;
+
         SearchContainer<SearchMovie> popularMovies, upComingMovies, topRatedMovies, nowPlayingMovies;
 
-        public OrdersController(MovieStoreDBContext moviestroedbcontext, Order order)
+        public OrdersController(MovieStoreDBContext moviestroedbcontext,
+                                    UserManager<ApplicationUser> userManager,
+                                    Order order)
         {
-            this._moviestroedbcontext = moviestroedbcontext;
-            this._order = order;
-            _OrderServiceRepo = new OrderServiceRepo(moviestroedbcontext);
+            _moviestroedbcontext = moviestroedbcontext;
+            _userManager = userManager;
+            _order = order;
         }
 
         private async Task LoadListOfMovies()
@@ -32,14 +39,21 @@ namespace Demo.Controllers
             nowPlayingMovies = await MovieListLoadApi.LoadApi("NOW PLAYING");
         }
 
-        public IActionResult Index()//int CartID
+        private async Task LoadMovie(int id)
         {
-            var items = _OrderServiceRepo.GetShoppingCartItems(1);//edit
-            _order.MovieOrder = items;
+            movie = await MovieLoadApi.LoadApi(id);
+        }
+
+        public async Task<IActionResult> Index()//int CartID
+        {
+            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            _order.OrderedMovies = _order.GetShoppingCartItems(customer.Id);//edit
+
             ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel()
             {
-                ShoppingCart = _order,
-                ShoppingCartTotal = _OrderServiceRepo.GetShoppingCartTotal(1)
+                Order = _order,
+                OrderTotal = _order.GetShoppingCartTotal()
 
             };
             return View(shoppingCartViewModel);
@@ -47,14 +61,13 @@ namespace Demo.Controllers
 
         public async Task<RedirectToActionResult> AddToShoppingCart(int movieId)
         {
-            await LoadListOfMovies();
-            var searchResultModel = new SearchResultMovieModelView();
-            InitializeModel(searchResultModel);
-            var selectedmovie = searchResultModel.ResultList.Results.FirstOrDefault(e => e.Id == movieId);
-            if (selectedmovie != null)
-            {
-                _OrderServiceRepo.AddToCart(selectedmovie);
-            }
+            await LoadMovie(movieId);
+
+            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (movie != null)
+                _order.AddToCart(movie, customer.Id);
+
             return RedirectToAction("Index");
         }
 
@@ -66,7 +79,7 @@ namespace Demo.Controllers
             var selectedmovie = searchResultModel.ResultList.Results.FirstOrDefault(e => e.Id == movieId);
             if (selectedmovie != null)
             {
-                _OrderServiceRepo.RemoveFromCart(selectedmovie, 1);
+                _order.RemoveFromCart(selectedmovie);
             }
             return RedirectToAction("Index");
         }
@@ -81,6 +94,30 @@ namespace Demo.Controllers
                 model.ResultList.Results.Add(item);
             foreach (var item in nowPlayingMovies.Results)
                 model.ResultList.Results.Add(item);
+        }
+
+        public async Task<IActionResult> BuyMovies()
+        {
+            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var order = new Order
+            {
+                CustomerID = customer.Id,
+                Customer = customer,
+                //OrderedMovies = ,
+                TotalPrice = 210
+            };
+
+            var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;
+            createOrderResult = createOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
+            return Redirect(createOrderResult.Links[1].Href);
+        }
+
+        public IActionResult Approved()
+        {
+            var captureOrderResponse = CaptureOrderSample.CaptureOrder(createOrderResult.Id, true).Result;
+            var captureOrderResult = captureOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
+            return RedirectToAction("Index", new { Controller = "Home" });
         }
     }
 }

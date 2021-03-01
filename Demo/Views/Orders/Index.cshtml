@@ -1,40 +1,46 @@
 ﻿
-@model ShoppingCartViewModel;
+@model ShoppingCartViewModel
 
 @{ Layout = "_SideLayout";}
 
 <h2>Your Shopping Cart</h2>
+<hr />
 <h4> Here are your favourite movies you selected </h4>
-<table class="table table-bordered table-striped">
+<hr />
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>selected amount </th>
+            <th>Selected amount</th>
             <th>Movie</th>
             <th class="text-right">Price</th>
             <th class="text-right">Sub total</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.ShoppingCart.MovieOrder)
+        @foreach (var item in Model.Order.OrderedMovies)
         {
-<tr>
-    <td class="text-center"> @item.CountItems</td>
-    <td class="text-center">@item.Title</td>
-    <td class="text-center">10</td>
-    <td class="text-right">
-        @((item.CountItems * 10).ToString("c"));
-    </td>
-
-
-</tr>}
+            <tr>
+                <td class="text-center"> @item.Amount</td>
+                <td class="text-center">@item.Title</td>
+                <td class="text-center">10</td>
+                <td class="text-right">
+                    @((item.CountItems * 10).ToString("c"))
+                </td>
+            </tr>
+        }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="3" class="text-right">total :</td>
+            <td colspan="3" class="text-right">Total :</td>
             <td class="text-right">
-                @Model.ShoppingCartTotal.ToString("c");
-
+                @Model.OrderTotal.ToString("c")
             </td>
         </tr>
     </tfoot>
 </table>
+<p class="button">
+    <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Check Out</a>
+</p>
+<p class="button">
+    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back To Home</a>
+</p>

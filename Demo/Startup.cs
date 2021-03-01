@@ -46,7 +46,7 @@ namespace Demo
                 config.LoginPath = "/User/Login";
             });
                
-            services.AddScoped<Order>(sp => OrderServiceRepo.Getorder(sp));
+            services.AddScoped<Order>(sp => Order.Getorder(sp));
 
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();

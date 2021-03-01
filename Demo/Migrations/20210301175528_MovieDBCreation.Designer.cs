@@ -4,14 +4,16 @@ using Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demo.Migrations
 {
     [DbContext(typeof(MovieStoreDBContext))]
-    partial class MovieStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210301175528_MovieDBCreation")]
+    partial class MovieDBCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

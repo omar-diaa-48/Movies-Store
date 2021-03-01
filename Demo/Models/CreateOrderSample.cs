@@ -42,7 +42,7 @@ namespace Demo.Models
         {
             List<Item> items = new List<Item>();
             decimal totalTax=0;
-            foreach(var movie in order.MovieOrder)
+            foreach(var movie in order.OrderedMovies)
             {
                 Item i = new Item()
                 {

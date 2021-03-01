@@ -62,5 +62,6 @@ namespace Demo.Models
         //ShoppingCartItem
         public DbSet<OrderedMovie> OrderedMovies { get; set; }
 
+
     }
 }

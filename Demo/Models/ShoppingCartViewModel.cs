@@ -7,7 +7,7 @@ namespace Demo.Models
 {
     public class ShoppingCartViewModel
     {
-        public Order ShoppingCart { get; set; }
-        public decimal ShoppingCartTotal { get; set; }
+        public Order Order { get; set; }
+        public decimal OrderTotal { get; set; }
     }
 }
