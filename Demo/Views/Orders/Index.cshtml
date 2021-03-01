@@ -24,7 +24,10 @@
                 <td class="text-center">@item.Title</td>
                 <td class="text-center">10</td>
                 <td class="text-right">
-                    @((item.CountItems * 10).ToString("c"))
+                    @((item.Amount * 10).ToString("c"))
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="RemoveFromShoppingCart" asp-controller="Orders" asp-route-movieId="@item.MovieId">Remove from cart</a>
                 </td>
             </tr>
         }

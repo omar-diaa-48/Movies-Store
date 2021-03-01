@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Demo.Services
 {
-    public interface ICustomerRepository
+    public interface IApplicationUserRepository
     {
-        public List<Customer> AllCustomers();
-        public Customer CustomerDetails(int id);
-        public void AddCustomer(Customer customer);
+        public List<ApplicationUser> AllCustomers();
+        public ApplicationUser CustomerDetails(int id);
+        public void AddCustomer(ApplicationUser customer);
         public void UpdateCustomer(int id);
         public void DeleteCustomer(int id);
     }

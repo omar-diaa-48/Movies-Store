@@ -15,14 +15,17 @@ namespace Demo.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _singInManager;
+        private readonly MovieStoreDBContext _context;
+
         //private static PayPalCheckoutSdk.Orders.Order createOrderResult;
 
         public UserController(UserManager<ApplicationUser> userManager, 
-                                SignInManager<ApplicationUser> signInMManager)
+                                SignInManager<ApplicationUser> signInMManager,
+                                MovieStoreDBContext context)
         {
             _userManager = userManager;
             _singInManager = signInMManager;
-
+            _context = context;
         }
 
         public async Task<IActionResult> UserDetails()
@@ -153,9 +156,16 @@ namespace Demo.Controllers
             {
                 //Sign in here 
                 var signInResult = await _singInManager.PasswordSignInAsync(newUser, Password, false, false);
-                
-                
-                
+
+                var order = new Demo.Models.Order
+                {
+                    OrderId = Guid.NewGuid().ToString(),
+                    CustomerID = newUser.Id
+                };
+
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });

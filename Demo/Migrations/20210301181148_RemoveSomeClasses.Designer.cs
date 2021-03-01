@@ -4,14 +4,16 @@ using Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demo.Migrations
 {
     [DbContext(typeof(MovieStoreDBContext))]
-    partial class MovieStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210301181148_RemoveSomeClasses")]
+    partial class RemoveSomeClasses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +139,7 @@ namespace Demo.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int>("CountItems")
                         .HasColumnType("int");
 
                     b.Property<string>("OrderId")
@@ -148,6 +150,9 @@ namespace Demo.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("movieId")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 

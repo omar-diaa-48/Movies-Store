@@ -17,10 +17,18 @@ namespace Demo.Models
 {
     public class Order//Shopping Chart
     {
+        private readonly MovieStoreDBContext _appDbContext;
+
+        private Order(MovieStoreDBContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+
         public Order()
         {
 
         }
+
         [Key]
         public string OrderId { get; set; }
 
@@ -29,15 +37,6 @@ namespace Demo.Models
         public decimal TotalPrice { get; set; }
 
         public List<OrderedMovie> OrderedMovies { get; set; }
-
-        public virtual ApplicationUser Customer { get; set; }
-
-        private readonly MovieStoreDBContext _appDbContext;
-
-        private Order(MovieStoreDBContext appDbContext)
-        {
-            _appDbContext = appDbContext;
-        }
 
         public static Order Getorder(IServiceProvider services)
         {
@@ -90,8 +89,8 @@ namespace Demo.Models
             int mymovieid = movie.Id;
 
             var myordermovie =
-                    _appDbContext.OrderedMovies.Include(s => s.order).SingleOrDefault(
-                        s => s.movieId == mymovieid && s.order.OrderId == OrderId);
+                    _appDbContext.OrderedMovies.Include(s => s.Order).SingleOrDefault(
+                        s => s.MovieId == mymovieid && s.Order.OrderId == OrderId);
 
 
             _appDbContext.Orders.Where(o => o.CustomerID == id);
@@ -105,7 +104,7 @@ namespace Demo.Models
                 myordermovie = new OrderedMovie
                 {
                     OrderId = OrderId,
-                    movieId = mymovieid,
+                    MovieId = mymovieid,
                     //Movie = movie,
                     Amount = 1
                 };
@@ -124,7 +123,7 @@ namespace Demo.Models
             int mymovieid = movie.Id;
             var shoppingCartItem =
                     _appDbContext.OrderedMovies.SingleOrDefault(
-                        s => s.movieId == mymovieid && s.OrderId == OrderId);
+                        s => s.MovieId == mymovieid && s.OrderId == OrderId);
             //var shoppingCartItem =
             //        _appDbContext.ShoppingCartItems.SingleOrDefault(
             //            s => s.Movie.Id == movie.Id && s.ShoppingCartId == ShoppingCartId);
@@ -177,6 +176,8 @@ namespace Demo.Models
                 .Select(c => 10 * c.Amount).Sum();
             return total;
         }
+
+        public virtual ApplicationUser Customer { get; set; }
 
     }
 }

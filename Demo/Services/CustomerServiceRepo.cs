@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Services
 {
-    public class CustomerServiceRepo : ICustomerRepository
+    public class CustomerServiceRepo : IApplicationUserRepository
     {
         private readonly MovieStoreDBContext context;
 
@@ -14,17 +14,17 @@ namespace Demo.Services
         {
             context = _context;
         }
-        public void AddCustomer(Customer customer)
+        public void AddCustomer(ApplicationUser customer)
         {
             throw new NotImplementedException();
         }
 
-        public List<Customer> AllCustomers()
+        public List<ApplicationUser> AllCustomers()
         {
             throw new NotImplementedException();
         }
 
-        public Customer CustomerDetails(int id)
+        public ApplicationUser CustomerDetails(int id)
         {
             throw new NotImplementedException();
         }

@@ -9,24 +9,25 @@ using TMDbLib.Objects.General;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Controllers
 {
     public class OrdersController : Controller
     {
         Movie movie;
-        private readonly MovieStoreDBContext _moviestroedbcontext;
+        private readonly MovieStoreDBContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private static PayPalCheckoutSdk.Orders.Order createOrderResult;
         private readonly Order _order;
 
         SearchContainer<SearchMovie> popularMovies, upComingMovies, topRatedMovies, nowPlayingMovies;
 
-        public OrdersController(MovieStoreDBContext moviestroedbcontext,
+        public OrdersController(MovieStoreDBContext context,
                                     UserManager<ApplicationUser> userManager,
                                     Order order)
         {
-            _moviestroedbcontext = moviestroedbcontext;
+            _context = context;
             _userManager = userManager;
             _order = order;
         }
@@ -46,27 +47,71 @@ namespace Demo.Controllers
 
         public async Task<IActionResult> Index()//int CartID
         {
+            ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel();
+
             var customer = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            _order.OrderedMovies = _order.GetShoppingCartItems(customer.Id);//edit
-
-            ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel()
+            if(customer != null)
             {
-                Order = _order,
-                OrderTotal = _order.GetShoppingCartTotal()
+                var order = _context.Orders.FirstOrDefault(o => o.CustomerID == customer.Id);
 
-            };
+                order.OrderedMovies = _context.OrderedMovies.Where(o => o.OrderId == order.OrderId).ToList();
+
+                shoppingCartViewModel.Order = order;
+                shoppingCartViewModel.OrderTotal = order.GetShoppingCartTotal();
+            }
+            else
+            {
+                _order.OrderedMovies = _order.GetShoppingCartItems(customer.Id);//edit
+
+                shoppingCartViewModel = new ShoppingCartViewModel()
+                {
+                    Order = _order,
+                    OrderTotal = _order.GetShoppingCartTotal()
+
+                };
+            }
+
+
             return View(shoppingCartViewModel);
         }
 
         public async Task<RedirectToActionResult> AddToShoppingCart(int movieId)
         {
+            var flag = false;
+
             await LoadMovie(movieId);
 
             var customer = await _userManager.FindByNameAsync(User.Identity.Name);
 
             if (movie != null)
-                _order.AddToCart(movie, customer.Id);
+            {
+                if(customer != null)
+                {
+                    var orderedMovie = MovieToOrderedMovie(movie);
+                    var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.CustomerID == customer.Id);
+
+                    foreach (var item in order.OrderedMovies)
+                        if (item.MovieId == orderedMovie.MovieId)
+                        {
+                            item.Amount++;
+                            await _context.SaveChangesAsync();
+                            flag = true;
+                        }
+
+
+                    if (orderedMovie != null && order != null && !flag)
+                    {
+                        orderedMovie.OrderId = order.OrderId;
+                        _context.OrderedMovies.Add(orderedMovie);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                else
+                {
+
+                }
+            }         
 
             return RedirectToAction("Index");
         }
@@ -96,7 +141,22 @@ namespace Demo.Controllers
                 model.ResultList.Results.Add(item);
         }
 
+<<<<<<< Updated upstream
         public void BuyMovies( Demo.Models.Order order)
+=======
+        public OrderedMovie MovieToOrderedMovie(Movie movie)
+        {
+            return new OrderedMovie
+            {
+                MovieId = movie.Id,
+                Title = movie.Title,
+                Amount = 1,
+                Price = 10,
+            };
+        }
+
+        public async Task<IActionResult> BuyMovies()
+>>>>>>> Stashed changes
         {
 
             var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;

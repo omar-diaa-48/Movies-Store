@@ -48,4 +48,10 @@ namespace Demo.Models
         [Display(Name ="Birth Date")]
         public DateTime BirthDate { get; set; }
     }
+
+    public enum Gender
+    {
+        Male,
+        Female
+    }
 }

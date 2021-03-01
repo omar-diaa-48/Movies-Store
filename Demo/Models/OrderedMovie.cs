@@ -8,11 +8,14 @@ namespace Demo.Models
 {
     public class OrderedMovie   //items
     {
+        private decimal tax;
+        private decimal price;
+
         [Key]
         public int ID { get; set; } //Shopping Cart Item ID
+
         public string Title { get; set; }
-        public int CountItems { get; set; }//amount
-        private decimal price;
+        //public int CountItems { get; set; }//amount
         public decimal Price
         {
             get => price;
@@ -22,12 +25,11 @@ namespace Demo.Models
                 tax = (price * 3) / 100;
             }
         }
-        private decimal tax;
         public decimal Tax { get => tax; }
         public string OrderId { get; set; }//Shoppingcart ID 
-        public int movieId { get; set; }
+        public int MovieId { get; set; }
         public int Amount { get; set; }
 
-        public virtual Order order { get; set; }
+        public virtual Order Order { get; set; }
     }
 }
