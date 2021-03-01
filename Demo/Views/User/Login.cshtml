@@ -2,6 +2,8 @@
 @{
     Layout = "_SideLayout";
     ViewData["Title"] = "LogIn";
+
+    var ExternalLogins = ViewBag.ExternalLogins;
 }
 
 
@@ -25,10 +27,12 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Log In" class="btn btn-group-lg" />
+                <a href="\Identity\Account\ExternalLogin" class="btn btn-primary">Use another services</a>
             </div>
         </form>
     </div>
 </div>
+
 
 <div>
     <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back to Home</a>

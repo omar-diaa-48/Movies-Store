@@ -14,9 +14,13 @@ namespace Demo.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+<<<<<<< Updated upstream
         private readonly SignInManager<ApplicationUser> _singInManager;
         private readonly MovieStoreDBContext _context;
 
+=======
+        private readonly SignInManager<ApplicationUser> _signInManager;
+>>>>>>> Stashed changes
         //private static PayPalCheckoutSdk.Orders.Order createOrderResult;
 
         public UserController(UserManager<ApplicationUser> userManager, 
@@ -24,8 +28,13 @@ namespace Demo.Controllers
                                 MovieStoreDBContext context)
         {
             _userManager = userManager;
+<<<<<<< Updated upstream
             _singInManager = signInMManager;
             _context = context;
+=======
+            _signInManager = signInMManager;
+
+>>>>>>> Stashed changes
         }
 
         public async Task<IActionResult> UserDetails()
@@ -107,9 +116,10 @@ namespace Demo.Controllers
             return View();
         }
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-
+            var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ViewBag.ExternalLogins = ExternalLogins;
             return View();
         }
 
@@ -120,7 +130,7 @@ namespace Demo.Controllers
 
             if (user != null)
             {
-                var signInResult = await _singInManager.PasswordSignInAsync(user, password, false, false);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
@@ -155,6 +165,7 @@ namespace Demo.Controllers
             if (result.Succeeded)
             {
                 //Sign in here 
+<<<<<<< Updated upstream
                 var signInResult = await _singInManager.PasswordSignInAsync(newUser, Password, false, false);
 
                 var order = new Demo.Models.Order
@@ -166,6 +177,12 @@ namespace Demo.Controllers
                 _context.Orders.Add(order);
                 _context.SaveChanges();
 
+=======
+                var signInResult = await _signInManager.PasswordSignInAsync(newUser, Password, false, false);
+                
+                
+                
+>>>>>>> Stashed changes
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
@@ -177,7 +194,7 @@ namespace Demo.Controllers
 
         public async Task<IActionResult> LogOut()
         {
-            await _singInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
