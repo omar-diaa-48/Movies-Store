@@ -19,12 +19,12 @@ namespace Demo.Models
         [DataType(DataType.EmailAddress)]
         public override string Email { get => base.Email; set => base.Email = value; }
 
-        [Required(ErrorMessage = "You have to enter your First Name")]
+       // [Required(ErrorMessage = "You have to enter your First Name")]
         [MinLength(3, ErrorMessage = "Min 3 characters"),MaxLength(15, ErrorMessage = "Max 15 characters")]
         [Display(Name ="First Name")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "You have to enter your Last Name")]
+       // [Required(ErrorMessage = "You have to enter your Last Name")]
         [MinLength(3, ErrorMessage = "Min 3 characters"), MaxLength(15, ErrorMessage = "Max 15 characters")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
