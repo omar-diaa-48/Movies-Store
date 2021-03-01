@@ -59,6 +59,24 @@ namespace Demo.Controllers
             {
                 var order = _context.Orders.FirstOrDefault(o => o.CustomerID == customer.Id);
 
+                if(order == null)
+                {
+                    order = new Order
+                    {
+                        OrderId = Guid.NewGuid().ToString(),
+                        CustomerID = customer.Id,
+                    };
+
+                    _context.Orders.Add(order);
+                    await _context.SaveChangesAsync();
+
+                    shoppingCartViewModel.Order = order;
+                    shoppingCartViewModel.OrderTotal = order.GetShoppingCartTotal();
+
+                    return View(shoppingCartViewModel);
+
+                }
+
                 order.OrderedMovies = _context.OrderedMovies.Where(o => o.OrderId == order.OrderId).ToList();
 
                 shoppingCartViewModel.Order = order;
