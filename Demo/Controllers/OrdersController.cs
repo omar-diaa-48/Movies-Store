@@ -152,20 +152,19 @@ namespace Demo.Controllers
             };
         }
 
-        public void Checkout(string orderId)
-        {
-            var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
-
-            if(order != null)
-                BuyMovies(order);
+        public IActionResult Checkout(string orderId)
+        {            
+            return RedirectToAction("BuyMovies", new { orderId = orderId }); 
         }
 
-        public void BuyMovies(Demo.Models.Order order)
+        public IActionResult BuyMovies(string orderId)
         {
-
+            var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
+            if (order == null)
+                return RedirectToAction("Index");
             var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;
             createOrderResult = createOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
-            Redirect(createOrderResult.Links[1].Href);
+            return Redirect(createOrderResult.Links[1].Href);
         }
 
         public IActionResult Approved()

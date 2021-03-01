@@ -20,8 +20,8 @@ namespace Demo.Models
                 {
                     BrandName = "Movie Store",
                     LandingPage = "BILLING",
-                    CancelUrl = $"https://localhost:44308/Home/Error",
-                    ReturnUrl = "https://localhost:44308/User/aproved",
+                    CancelUrl = "https://localhost:44308/Home/Error",
+                    ReturnUrl = "https://localhost:44308/Orders/Approved",
                     UserAction = "CONTINUE",
                     ShippingPreference = "SET_PROVIDED_ADDRESS"
                 },
@@ -59,10 +59,10 @@ namespace Demo.Models
                         CurrencyCode = "USD",
                         Value = String.Format("{0:0.00}", movie.Tax)
                     },
-                    Quantity = "1",
+                    Quantity = movie.Amount.ToString(),
                     Category = "DIGITAL_GOODS"
                 };
-                totalTax += movie.Tax;
+                totalTax += movie.Tax* movie.Amount;
                 items.Add(i);
             }
             return new PurchaseUnitRequest
@@ -75,13 +75,13 @@ namespace Demo.Models
                 {
                     
                     CurrencyCode = "USD",
-                    Value = String.Format("{0:0.00}",(order.TotalPrice + totalTax + 5)),
+                    Value = String.Format("{0:0.00}",(order.OrderedMovies.Sum(o => o.Amount * o.Price) + totalTax + 5)),
                     AmountBreakdown = new AmountBreakdown
                     {
                         ItemTotal = new Money
                         {
                             CurrencyCode = "USD",
-                            Value = String.Format("{0:0.00}",order.TotalPrice)
+                            Value = String.Format("{0:0.00}",order.OrderedMovies.Sum(o=>o.Amount*o.Price))
                         },
                         Shipping = new Money
                         {
