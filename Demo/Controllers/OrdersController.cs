@@ -141,9 +141,6 @@ namespace Demo.Controllers
                 model.ResultList.Results.Add(item);
         }
 
-<<<<<<< Updated upstream
-        public void BuyMovies( Demo.Models.Order order)
-=======
         public OrderedMovie MovieToOrderedMovie(Movie movie)
         {
             return new OrderedMovie
@@ -155,8 +152,15 @@ namespace Demo.Controllers
             };
         }
 
-        public async Task<IActionResult> BuyMovies()
->>>>>>> Stashed changes
+        public void Checkout(string orderId)
+        {
+            var order = _context.Orders.Include(o => o.OrderedMovies).FirstOrDefault(o => o.OrderId == orderId);
+
+            if(order != null)
+                BuyMovies(order);
+        }
+
+        public void BuyMovies(Demo.Models.Order order)
         {
 
             var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;

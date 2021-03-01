@@ -20,7 +20,7 @@ namespace Demo.Models
                 {
                     BrandName = "Movie Store",
                     LandingPage = "BILLING",
-                    CancelUrl = "https://localhost:44308/Home/Error",
+                    CancelUrl = $"https://localhost:44308/Home/Error",
                     ReturnUrl = "https://localhost:44308/User/aproved",
                     UserAction = "CONTINUE",
                     ShippingPreference = "SET_PROVIDED_ADDRESS"
