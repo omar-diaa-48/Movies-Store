@@ -96,21 +96,12 @@ namespace Demo.Controllers
                 model.ResultList.Results.Add(item);
         }
 
-        public async Task<IActionResult> BuyMovies()
+        public void BuyMovies( Demo.Models.Order order)
         {
-            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            var order = new Order
-            {
-                CustomerID = customer.Id,
-                Customer = customer,
-                //OrderedMovies = ,
-                TotalPrice = 210
-            };
 
             var createOrderResponse = CreateOrderSample.CreateOrder(order, true).Result;
             createOrderResult = createOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
-            return Redirect(createOrderResult.Links[1].Href);
+            Redirect(createOrderResult.Links[1].Href);
         }
 
         public IActionResult Approved()
