@@ -233,10 +233,16 @@ namespace Demo.Controllers
             return Redirect(createOrderResult.Links[1].Href);
         }
 
-        public IActionResult Approved()
+        public async Task<IActionResult> Approved()
         {
             var captureOrderResponse = CaptureOrderSample.CaptureOrder(createOrderResult.Id, true).Result;
             var captureOrderResult = captureOrderResponse.Result<PayPalCheckoutSdk.Orders.Order>();
+
+            var customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            var order = await _context.Orders.Include(o=>o.OrderedMovies).FirstOrDefaultAsync(o => o.CustomerID == customer.Id);
+            order.OrderedMovies.Clear();
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", new { Controller = "Home" });
         }
     }
