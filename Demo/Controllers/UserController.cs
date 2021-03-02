@@ -29,15 +29,13 @@ namespace Demo.Controllers
                                 UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInMManager,
                                 MovieStoreDBContext context,
-                                IEmailService emailService,
-                                IAuthorizationService AuthorizationService)
+                                IEmailService emailService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInMManager;
             _roleManager = roleManager;
             _emailService = emailService;
-            _AuthorizationService = AuthorizationService;
         }
 
         public async Task<IActionResult> UserDetails()
