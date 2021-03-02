@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+<ul class="nav navbar-nav flex-child-menu menu-right">
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" title="Customer" asp-action="UserDetails" asp-controller="User">Hello @User.Identity.Name !</a>
+        </li>
+        if (User.IsInRole("adminRole"))
+        {
+            <li class="btn"><a asp-action="Index" asp-controller="Admin">Manage</a></li>
+
+        }
+        <li class="btn"><a asp-action="Logout" asp-controller="User">Logout</a></li>
+
+    }
+    else
+    {
+        @await Component.InvokeAsync("OrderSummary")
+        <li class="btn" style="margin-left:5px"><a asp-action="Login" asp-controller="User"> Log In </a></li>
+        <li class="btn" style="margin-left:5px"><a asp-action="SignUp" asp-controller="User"> Sign Up </a></li>
+
+    }
+</ul>
+
+
