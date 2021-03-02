@@ -10,9 +10,11 @@ using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demo.Controllers
 {
+    [AllowAnonymous]
     public class OrdersController : Controller
     {
         Movie movie;

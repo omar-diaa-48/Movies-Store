@@ -1,4 +1,5 @@
 ﻿using Demo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PayPalCheckoutSdk.Orders;
@@ -11,23 +12,28 @@ using System.Threading.Tasks;
 
 namespace Demo.Controllers
 {
+    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly MovieStoreDBContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAuthorizationService _AuthorizationService;
 
         //private static PayPalCheckoutSdk.Orders.Order createOrderResult;
 
-        public UserController(UserManager<ApplicationUser> userManager, 
+        public UserController(RoleManager<IdentityRole> roleManager,
+                                UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInMManager,
-                                MovieStoreDBContext context)
+                                MovieStoreDBContext context,
+                                IAuthorizationService AuthorizationService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInMManager;
-
-
+            _roleManager = roleManager;
+            _AuthorizationService = AuthorizationService;
         }
 
         public async Task<IActionResult> UserDetails()
@@ -69,9 +75,9 @@ namespace Demo.Controllers
 
             var updateResult = await _userManager.UpdateAsync(customerToBeUpdated);
 
-            if(updateResult.Succeeded)
+            if (updateResult.Succeeded)
                 return RedirectToAction("Index", "Home");
-            
+
 
             return View(customer);
         }
@@ -92,7 +98,7 @@ namespace Demo.Controllers
             var customerToBeUpdated = await _userManager.FindByIdAsync(customer.Id);
 
             if (customerToBeUpdated == null)
-                return RedirectToAction("Edit", new {id = id });
+                return RedirectToAction("Edit", new { id = id });
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(customerToBeUpdated, oldPassword, newPassword);
 
@@ -139,8 +145,10 @@ namespace Demo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(ApplicationUser AppUser, string Password)
+        public async Task<IActionResult> Register(ApplicationUser AppUser, string Password, string adminRole)
         {
+            IdentityResult roleResult = null;
+            IdentityResult roleAssignResult = null;
             var newUser = new ApplicationUser
             {
                 UserName = AppUser.UserName,
@@ -155,10 +163,8 @@ namespace Demo.Controllers
 
             var result = await _userManager.CreateAsync(newUser, Password);
 
-            if (result.Succeeded)
+            if (result.Succeeded )
             {
-                //Sign in here 
-
                 var signInResult = await _signInManager.PasswordSignInAsync(newUser, Password, false, false);
 
                 var order = new Demo.Models.Order
@@ -170,11 +176,24 @@ namespace Demo.Controllers
                 _context.Orders.Add(order);
                 _context.SaveChanges();
 
+                if (adminRole == "on")
+                {
+                    if (!await _roleManager.RoleExistsAsync("adminRole"))
+                    {
+                        roleResult = await _roleManager.CreateAsync(new IdentityRole("adminRole"));
+                    }
+
+                    if (roleResult?.Succeeded ?? true)
+                    {
+                        roleAssignResult = await _userManager.AddToRoleAsync(newUser, "adminRole");
+                    }
+                }
 
                 if (signInResult.Succeeded)
                 {
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
+
             }
 
             return RedirectToAction("SignUp");

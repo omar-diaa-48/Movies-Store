@@ -1,4 +1,5 @@
 ﻿using Demo.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using TMDbLib.Objects.Search;
 
 namespace Demo.Controllers
 {
+    [AllowAnonymous]
     public class MoviesController : Controller
     {
         SearchContainer<SearchMovie> popularMovies, upComingMovies, topRatedMovies, nowPlayingMovies;

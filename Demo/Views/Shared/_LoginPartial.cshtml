@@ -7,11 +7,18 @@
 <ul class="nav navbar-nav flex-child-menu menu-right">
     @if (SignInManager.IsSignedIn(User))
     {
+
         <li><a asp-action="Index" asp-controller="Orders">Cart</a></li>
         <li class="nav-item">
             <a class="nav-link text-dark" title="Customer" asp-action="UserDetails" asp-controller="User">Hello @User.Identity.Name !</a>
         </li>
+        if (User.IsInRole("adminRole"))
+        {
+            <li class="btn"><a asp-action="Index" asp-controller="Admin">Manage</a></li>
+
+        }
         <li class="btn"><a asp-action="Logout" asp-controller="User">Logout</a></li>
+
     }
     else
     {

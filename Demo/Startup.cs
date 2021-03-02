@@ -3,6 +3,7 @@ using Demo.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -76,6 +77,13 @@ namespace Demo
                 options.ClientSecret = "-oi2U3KX0z2IACJLc9miZzNT";
             });
 
+            services.AddAuthorization(config =>
+            {
+                config.FallbackPolicy = new AuthorizationPolicyBuilder()
+                 .RequireAuthenticatedUser()
+                 .Build();
+            });
+
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddSession();
@@ -102,10 +110,9 @@ namespace Demo
             app.UseSession();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,0 +1,42 @@
+﻿@model Demo.Models.ApplicationUser
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-6">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayNameFor(model => model.Email)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-6">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
