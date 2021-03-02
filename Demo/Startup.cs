@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +50,7 @@ namespace Demo
             {
                 config.Password.RequiredUniqueChars = 0;
                 config.Password.RequireNonAlphanumeric = false;
+                config.SignIn.RequireConfirmedEmail = true;
             })
                      .AddEntityFrameworkStores<MovieStoreDBContext>()
                      .AddDefaultTokenProviders();
@@ -56,6 +59,13 @@ namespace Demo
             {
                 config.Cookie.Name = "BlockBusterCookie";
                 config.LoginPath = "/User/Login";
+            });
+
+            var mailKitOptions = Configuration.GetSection("Email").Get<MailKitOptions>();
+
+            services.AddMailKit(config =>
+            {
+                config.UseMailKit(mailKitOptions);
             });
 
             services.AddScoped<Order>(sp => Order.Getorder(sp));

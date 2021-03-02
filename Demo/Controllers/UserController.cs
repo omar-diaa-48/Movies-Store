@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NETCore.MailKit.Core;
 using PayPalCheckoutSdk.Orders;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Demo.Controllers
         private readonly MovieStoreDBContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailService _emailService;
         private readonly IAuthorizationService _AuthorizationService;
 
         //private static PayPalCheckoutSdk.Orders.Order createOrderResult;
@@ -27,12 +29,14 @@ namespace Demo.Controllers
                                 UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInMManager,
                                 MovieStoreDBContext context,
+                                IEmailService emailService,
                                 IAuthorizationService AuthorizationService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInMManager;
             _roleManager = roleManager;
+            _emailService = emailService;
             _AuthorizationService = AuthorizationService;
         }
 
@@ -165,7 +169,6 @@ namespace Demo.Controllers
 
             if (result.Succeeded )
             {
-                var signInResult = await _signInManager.PasswordSignInAsync(newUser, Password, false, false);
 
                 var order = new Demo.Models.Order
                 {
@@ -189,15 +192,45 @@ namespace Demo.Controllers
                     }
                 }
 
-                if (signInResult.Succeeded)
+                if (result.Succeeded && (roleResult == null || roleResult.Succeeded))
                 {
-                    return RedirectToAction("Index", "Home", new { area = "" });
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+
+                    var link = Url.Action(nameof(VerifyEmail), "User", new { userID = newUser.Id, code }, Request.Scheme, Request.Host.ToString());
+
+                    await _emailService.SendAsync(newUser.Email, "email verify", $"<p>Please verify your email by clicking &nbsp; <a style = \"color: red; font-size: 30px;\" href = \"{link}\" > Here </a></p>", true);
+
+                    return RedirectToAction("EmailVerification");
                 }
+                //var signInResult = await _signInManager.PasswordSignInAsync(newUser, Password, false, false);
+
+                //if (signInResult.Succeeded)
+                //{
+                //    return RedirectToAction("Index", "Home", new { area = "" });
+                //}
 
             }
 
             return RedirectToAction("SignUp");
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> VerifyEmail(string userID, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user == null) return BadRequest();
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        public IActionResult EmailVerification() => View();
 
         public async Task<IActionResult> LogOut()
         {
